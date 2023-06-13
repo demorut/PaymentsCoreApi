@@ -1,0 +1,29 @@
+﻿version: "3.7"
+
+networks:
+  frontend:
+    ipam:
+      config:
+        - subnet: 10.255.100.0/28
+services:
+  smartlifeapi:
+    build: ./
+    environment:
+      - TZ=Africa/Nairobi
+    expose:
+      - 80
+    ports:
+      - "80"
+    networks:
+        frontend:
+            ipv4_address: 10.255.100.10      
+  nginx:
+    build: ./nginx/
+    container_name: server_smartlifeapi
+    depends_on: 
+      - smartlifeapi
+    ports:
+      - "9702:9702"
+    networks:
+        frontend:
+            ipv4_address: 10.255.100.11 
