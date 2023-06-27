@@ -35,5 +35,25 @@ namespace PaymentsCoreApi.Domain.Entities
         [Column("customer_status")]
         [StringLength(100)]
         public string? CustomerStatus { get; set; }
+
+        [Column("country_code")]
+        [StringLength(100)]
+        public string? CountryCode { get; set; }
+
+        [Column("user_id")]
+        [StringLength(100)]
+        public string? UserId { get; set; }
+
+        [Column("password")]
+        [StringLength(200)]
+        public string? Password { get; set; }
+
+        [Column("phone_number")]
+        [StringLength(100)]
+        public string? PhoneNumber { get; set; }
+
+        [Column("email")]
+        [StringLength(100)]
+        public string? email { get; set; }
     }
 }
