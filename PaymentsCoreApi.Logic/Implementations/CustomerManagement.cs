@@ -37,6 +37,7 @@ namespace PaymentsCoreApi.Logic.Implementations
                     return new BaseResponse() { ResponseCode = "100", ResponseMessage = "Phone Number or email already exists in the system, please reset password if you have forgotten it" };
 
                 var otp = _commonLogic.GenerateOTP();
+                var passwordDetails=Helper.EncryptPassword(request.Password);
                 var newCustomer = new SignUpRequest()
                 {
                     FirstName = request.FirstName,
@@ -44,7 +45,8 @@ namespace PaymentsCoreApi.Logic.Implementations
                     Email = request.Email,
                     PhoneNumber = Helper.FormatPhoneNumber(request.PhoneNumber),
                     RecordDate = DateTime.Now,
-                    Password = Helper.Encrypt(request.Password),
+                    Password = passwordDetails.Item1,
+                    RandomCode=passwordDetails.Item2,
                     Status = SystemConstants.Pending,
                     CustomerType = SystemConstants.Customer,
                     CountryCode = request.CountryCode,
@@ -71,6 +73,18 @@ namespace PaymentsCoreApi.Logic.Implementations
                     ResponseMessage = "An Otp has been sent ",
                     ResponseId = customerlog.Entity.RecordId.ToString()
                 };
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public async Task<BaseResponse> CompleteCustomerSignUp(CompleteRequestDto request)
+        {
+            try
+            {
+
             }
             catch (Exception ex)
             {

@@ -9,6 +9,7 @@ namespace PaymentsCoreApi.Logic.Interfaces
 {
     public interface ICustomerManagement
     {
+        Task<BaseResponse> CompleteCustomerSignUp(CompleteRequestDto request);
         Task<BaseResponse> InitiateCustomerSignUp(CustomerSignUpDto request);
     }
 }

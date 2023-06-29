@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace PaymentsCoreApi.Domain.Entities
 {
-    [Table("signup_request")]
+    [Table("signup_requests")]
     public class SignUpRequest:BaseEntity
     {
         [Key]
@@ -51,5 +51,9 @@ namespace PaymentsCoreApi.Domain.Entities
         [Column("otp")]
         [StringLength(100)]
         public string? Otp { get; set; }
+
+        [Column("rand_code")]
+        [StringLength(200)]
+        public string? RandomCode { get; set; }
     }
 }

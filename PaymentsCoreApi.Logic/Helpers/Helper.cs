@@ -141,11 +141,44 @@ namespace PaymentsCoreApi.Logic.Helpers
             return regex.IsMatch(email);
         }
 
-        internal static string Encrypt(string? password)
+        public static Tuple<string, string> EncryptPassword(string password)
         {
-            //encrypt password
-            byte[] data = UTF8Encoding.UTF8.GetBytes(password);
-            return Encoding.UTF8.GetString(data);
+            // Generate a random salt
+            byte[] salt = GenerateSalt();
+
+            // Hash the password with the salt using PBKDF2 algorithm
+            byte[] hashedPassword = HashPassword(password, salt);
+
+            // Combine the salt and hashed password
+            byte[] saltedPassword = new byte[salt.Length + hashedPassword.Length];
+            Array.Copy(salt, saltedPassword, salt.Length);
+            Array.Copy(hashedPassword, 0, saltedPassword, salt.Length, hashedPassword.Length);
+
+            // Convert the salted password to Base64 string
+            string encryptedPassword = Convert.ToBase64String(saltedPassword);
+            return Tuple.Create(encryptedPassword, Convert.ToBase64String(salt));
+        }
+
+        private static byte[] GenerateSalt()
+        {
+            // Generate a cryptographically secure random salt
+            byte[] salt = new byte[16]; // 16 bytes = 128 bits
+            using (var rng = new RNGCryptoServiceProvider())
+            {
+                rng.GetBytes(salt);
+            }
+            return salt;
+        }
+
+        private static byte[] HashPassword(string password, byte[] salt)
+        {
+            int iterations = 10000; // Number of PBKDF2 iterations
+
+            // Create a new instance of the Rfc2898DeriveBytes class
+            using (var pbkdf2 = new Rfc2898DeriveBytes(password, salt, iterations))
+            {
+                return pbkdf2.GetBytes(32); // 32 bytes = 256 bits (AES key size)
+            }
         }
     }
 }

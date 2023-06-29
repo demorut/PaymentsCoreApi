@@ -10,7 +10,7 @@ namespace PaymentsCoreApi.Logic.Interfaces
     {
         string GenerateOTP();
         bool IsValidCredentails(string? signature, string inputstring);
-        Task SendEmailNotification(string email, string emailmessage, string signUpEmailSubject);
+        Task SendEmailNotification(string recipientEmail, string emailmessage, string signUpEmailSubject);
         Task SendSmsNotification(string phonenumber, string smsmessage);
     }
 }

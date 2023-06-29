@@ -4,8 +4,11 @@ using PaymentsCoreApi.Logic.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mail;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace PaymentsCoreApi.Logic.Implementations
 {
@@ -13,6 +16,10 @@ namespace PaymentsCoreApi.Logic.Implementations
     {
         private IHttpServices _httpServices;
         private DataBaseContext _dataBaseContext;
+        private readonly string smtphost = "smtp.gmail.com";
+        private readonly int smtpport = 587;
+        private readonly string senderEmail = "emorutdeogratius@gmail.com";
+        private readonly string senderPassword = "Password";
         public CommonLogic(DataBaseContext dataBaseContext, IHttpServices httpServices)
         {
             _dataBaseContext = dataBaseContext;
@@ -55,11 +62,23 @@ namespace PaymentsCoreApi.Logic.Implementations
             // Return the OTP as a string.
             return otp.ToString();
         }
-        public async Task SendEmailNotification(string email, string emailmessage, string signUpEmailSubject)
+        public async Task SendEmailNotification(string recipientEmail, string emailmessage, string signUpEmailSubject)
         {
             try
             {
-
+                // Set up the SMTP client
+                SmtpClient smtpClient = new SmtpClient(smtphost, smtpport);
+                smtpClient.EnableSsl = true;
+                smtpClient.UseDefaultCredentials = false;
+                smtpClient.Credentials = new NetworkCredential(senderEmail, senderPassword);
+                MailAddress fromAddress =new MailAddress(senderEmail,"Wallet-App");
+                MailAddress toAddress = new MailAddress(recipientEmail);
+                // Create a MailMessage object
+                MailMessage mailMessage = new MailMessage(fromAddress, toAddress);
+                mailMessage.Subject = signUpEmailSubject;
+                mailMessage.Body = emailmessage;
+                // Send the email
+                smtpClient.Send(mailMessage);
             }
             catch (Exception ex)
             {

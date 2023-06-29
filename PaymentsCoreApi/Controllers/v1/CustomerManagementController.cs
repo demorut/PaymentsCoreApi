@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PaymentsCoreApi.Domain.Dtos;
 using PaymentsCoreApi.Logic.Implementations;
 using PaymentsCoreApi.Logic.Interfaces;
@@ -14,6 +15,7 @@ namespace PaymentsCoreApi.Controllers.v1
         }
 
         [HttpPost]
+        [Authorize]
         [ActionName("initiate_customer_signup")]
         [ProducesResponseType(typeof(BaseResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(BaseResponse), StatusCodes.Status401Unauthorized)]
@@ -24,6 +26,28 @@ namespace PaymentsCoreApi.Controllers.v1
             try
             {
                 response = await _customerManagement.InitiateCustomerSignUp(request);
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                response.ResponseCode = "100";
+                response.ResponseMessage = "Sorry!, Service is currently unavailable please try again later ";
+                return Ok(response);
+            }
+        }
+
+        [HttpPost]
+        [Authorize]
+        [ActionName("Complete_customer_signup")]
+        [ProducesResponseType(typeof(BaseResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(BaseResponse), StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(typeof(BaseResponse), StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> CompleteCustomerSignUp(CompleteRequestDto request)
+        {
+            var response = new BaseResponse();
+            try
+            {
+                response = await _customerManagement.CompleteCustomerSignUp(request);
                 return Ok(response);
             }
             catch (Exception ex)
