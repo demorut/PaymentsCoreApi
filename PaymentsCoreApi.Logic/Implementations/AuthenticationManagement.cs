@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
+using PaymentsCoreApi.Data.Contexts;
 using PaymentsCoreApi.Domain.Dtos;
 using PaymentsCoreApi.Logic.Interfaces;
 using System;
@@ -12,21 +13,23 @@ namespace PaymentsCoreApi.Logic.Implementations
 {
     public class AuthenticationManagement: IAuthenticationManagement
     {
+        private DataBaseContext _dataBaseContext;
         private IDataManagement _datamanagement;
         private ICommonLogic _commonLogic;
         private readonly IConfiguration _config;
-        public AuthenticationManagement(IDataManagement dataBaseContext, ICommonLogic commonLogic, IConfiguration config)
+        public AuthenticationManagement(DataBaseContext dataBaseContext,IDataManagement datamanagement, ICommonLogic commonLogic, IConfiguration config)
         {
-            _datamanagement = dataBaseContext;
+            _datamanagement = datamanagement;
             _commonLogic = commonLogic;
             _config = config;
+            _dataBaseContext = dataBaseContext;
         }
         public async Task<AuthenticationResponseDto> AuthenticateReuest(AuthenticationRequestDto request)
         {
             try
             {
                 var response = new AuthenticationResponseDto();
-                var credentails = _datamanagement.Channel.Where(c => c.ChannelKey == request.apikey).FirstOrDefault();
+                var credentails = _dataBaseContext.Channel.Where(c => c.ChannelKey == request.apikey).FirstOrDefault();
                 if (credentails != null)
                 {
                     var inputstring = credentails.ChannelKey + credentails.ChannelSecretKey + request.requestdatetime;
