@@ -8,5 +8,6 @@ namespace PaymentsCoreApi.Logic.Interfaces
 {
     public interface ICommonLogic
     {
+        bool IsValidCredentails(string? signature, string inputstring);
     }
 }

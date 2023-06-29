@@ -14,4 +14,7 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="6.0.16" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\PaymentsCoreApi.Domain\PaymentsCoreApi.Domain.csproj" />
+  </ItemGroup>
 </Project>

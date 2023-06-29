@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using PaymentsCoreApi.Domain;
+using PaymentsCoreApi.Domain.Entities;
 
 namespace PaymentsCoreApi.Data.Contexts
 {
@@ -17,6 +19,8 @@ namespace PaymentsCoreApi.Data.Contexts
         {
             base.OnConfiguring(optionsBuilder);
         }
+
+        public DbSet<Channel> Channel { get; set; }
     }
 
 }
