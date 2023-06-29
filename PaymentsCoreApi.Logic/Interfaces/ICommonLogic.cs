@@ -8,6 +8,9 @@ namespace PaymentsCoreApi.Logic.Interfaces
 {
     public interface ICommonLogic
     {
+        string GenerateOTP();
         bool IsValidCredentails(string? signature, string inputstring);
+        Task SendEmailNotification(string email, string emailmessage, string signUpEmailSubject);
+        Task SendSmsNotification(string phonenumber, string smsmessage);
     }
 }

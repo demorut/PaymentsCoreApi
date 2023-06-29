@@ -45,5 +45,38 @@ namespace PaymentsCoreApi.Logic.Implementations
                 return false;
             }
         }
+
+        public string GenerateOTP()
+        {
+            // Create a new random number generator.
+            Random random = new Random();
+            // Generate a 5 digit random number.
+            int otp = random.Next(100000, 999999);
+            // Return the OTP as a string.
+            return otp.ToString();
+        }
+        public async Task SendEmailNotification(string email, string emailmessage, string signUpEmailSubject)
+        {
+            try
+            {
+
+            }
+            catch (Exception ex)
+            {
+                // do nothing
+            }
+        }
+
+        public async Task SendSmsNotification(string phonenumber, string smsmessage)
+        {
+            try
+            {
+
+            }
+            catch (Exception ex) 
+            {
+                //do nothing
+            }
+        }
     }
 }

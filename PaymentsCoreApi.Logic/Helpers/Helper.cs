@@ -3,6 +3,7 @@ using System.Data;
 using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace PaymentsCoreApi.Logic.Helpers
 {
@@ -122,6 +123,29 @@ namespace PaymentsCoreApi.Logic.Helpers
             {
                 return phonenumber;
             }
+        }
+
+        public static bool IsValidEmailAddress(string? email)
+        {
+            if (String.IsNullOrEmpty(email))
+            {
+                return true;
+            }
+            // Regular expression pattern for validating email addresses
+            string pattern = @"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$";
+
+            // Create a Regex object with the pattern
+            Regex regex = new Regex(pattern);
+
+            // Use the IsMatch method to check if the email matches the pattern
+            return regex.IsMatch(email);
+        }
+
+        internal static string Encrypt(string? password)
+        {
+            //encrypt password
+            byte[] data = UTF8Encoding.UTF8.GetBytes(password);
+            return Encoding.UTF8.GetString(data);
         }
     }
 }

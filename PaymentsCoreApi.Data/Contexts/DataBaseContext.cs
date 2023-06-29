@@ -21,6 +21,7 @@ namespace PaymentsCoreApi.Data.Contexts
         }
 
         public DbSet<Channel> Channel { get; set; }
+        public DbSet<Customers> Customers { get; set; }
     }
 
 }

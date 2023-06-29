@@ -1,24 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace PaymentsCoreApi.Domain.Entities
 {
-    [Table("customers")]
-    public class Customers:BaseEntity
+    [Table("signup_request")]
+    public class SignUpRequest:BaseEntity
     {
+        [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Column("record_id")]
         public long RecordId { get; set; }
-
-        [Key]
-        [Column("customer_id")]
-        [StringLength(100)]
-        public string? CustomerId { get; set; }
 
         [Column("first_name")]
         [StringLength(100)]
@@ -32,17 +28,13 @@ namespace PaymentsCoreApi.Domain.Entities
         [StringLength(100)]
         public string? CustomerType { get; set; }
 
-        [Column("customer_status")]
+        [Column("status")]
         [StringLength(100)]
-        public string? CustomerStatus { get; set; }
+        public string? Status { get; set; }
 
         [Column("country_code")]
         [StringLength(100)]
         public string? CountryCode { get; set; }
-
-        [Column("user_id")]
-        [StringLength(100)]
-        public string? UserId { get; set; }
 
         [Column("password")]
         [StringLength(200)]
@@ -55,5 +47,9 @@ namespace PaymentsCoreApi.Domain.Entities
         [Column("email")]
         [StringLength(100)]
         public string? Email { get; set; }
+
+        [Column("otp")]
+        [StringLength(100)]
+        public string? Otp { get; set; }
     }
 }
