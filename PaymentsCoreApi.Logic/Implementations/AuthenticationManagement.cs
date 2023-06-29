@@ -1,9 +1,11 @@
 ﻿using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 using PaymentsCoreApi.Data.Contexts;
 using PaymentsCoreApi.Domain.Dtos;
 using PaymentsCoreApi.Logic.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
@@ -83,7 +85,7 @@ namespace PaymentsCoreApi.Logic.Implementations
                     expires: Expiry,
                     signingCredentials: credentials
                     );
-                return new AuthenticationResponse()
+                return new AuthenticationResponseDto()
                 {
                     access_token = new JwtSecurityTokenHandler().WriteToken(token),
                     expires_in = Expiry.ToString(),
