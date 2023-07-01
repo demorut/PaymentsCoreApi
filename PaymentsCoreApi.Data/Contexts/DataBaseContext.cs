@@ -22,6 +22,14 @@ namespace PaymentsCoreApi.Data.Contexts
 
         public DbSet<Channel> Channel { get; set; }
         public DbSet<Customers> Customers { get; set; }
+        public DbSet<SignUpRequest> SignUpRequest { get; set; }
+        public DbSet<UserLogins> UserLogins { get; set; }
+        public DbSet<Country> Country { get; set; }
+        public DbSet<TransactionHeader> TransactionHeader { get; set; }
+        public DbSet<GeneralLedger> GeneralLedger { get; set; }
+        public DbSet<Account> Account { get; set; }
+        public DbSet<PasswordResetRequests> PasswordResetRequests { get; set; }
+
     }
 
 }

@@ -11,5 +11,7 @@ namespace PaymentsCoreApi.Domain.Constants
         public const string Pending = "PENDING";
         public const string Customer = "CUSTOMER";
         public const string SignUpEmailSubject = "Customer SignUp";
+        public const string CustomerAccountType = "NORMAL";
+        public const int PasswordExpiryDays = 365;
     }
 }

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace PaymentsCoreApi.Domain.Entities
 {
     [Table("general_ledger")]
-    internal class GeneralLedger
+    public class GeneralLedger
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

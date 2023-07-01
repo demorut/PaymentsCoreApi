@@ -69,7 +69,7 @@ namespace PaymentsCoreApi.Logic.Implementations
 
                 return new BaseResponse()
                 {
-                    ResponseCode = "100",
+                    ResponseCode = "200",
                     ResponseMessage = "An Otp has been sent ",
                     ResponseId = customerlog.Entity.RecordId.ToString()
                 };
@@ -84,7 +84,74 @@ namespace PaymentsCoreApi.Logic.Implementations
         {
             try
             {
+                var signuprequest = await _dataBaseContext.SignUpRequest.Where(s => s.RecordId == Convert.ToInt64(request.RequestId)).FirstOrDefaultAsync();
 
+                if (signuprequest == null)
+                    return new BaseResponse() { ResponseCode = "100", ResponseMessage = "Invalid request id" };
+
+                if (!signuprequest.Otp.Equals(request.Otp))
+                    return new BaseResponse() { ResponseCode = "100", ResponseMessage = "Invalid otp" };
+
+                if(DateTime.Now>signuprequest.RecordDate.AddMinutes(5))
+                    return new BaseResponse() { ResponseCode = "100", ResponseMessage = "Otp has expired" };
+
+                var country=await _dataBaseContext.Country.Where(c=>c.CountryCode==signuprequest.CountryCode).FirstOrDefaultAsync();
+                if (country == null)
+                    return new BaseResponse() { ResponseCode = "100", ResponseMessage = "Country is not Currently supported" };
+
+                //sign up customer
+                using (var dbTran = _dataBaseContext.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        var newCustomer = new Customers()
+                        {
+                            FirstName = signuprequest.FirstName,
+                            LastName = signuprequest.LastName,
+                            Email = signuprequest.Email,
+                            PhoneNumber = signuprequest.PhoneNumber,
+                            RecordDate = DateTime.Now,
+                            CustomerStatus = true,
+                            CustomerType = SystemConstants.Customer,
+                            CountryCode = signuprequest.CountryCode
+                        };
+                        var userlogin = new UserLogins()
+                        {
+                            CustomerId= signuprequest.PhoneNumber,
+                            Username= signuprequest.PhoneNumber,
+                            Password=signuprequest.Password,
+                            RandomCode=signuprequest.RandomCode,
+                            Reset=false,
+                            RecordDate= DateTime.Now,
+                            Active=true,
+                            LastPasswordChangeDate= DateTime.Now,
+                            LoginAttempts=0,
+                            LastLoginDate=DateTime.Now,
+                        };
+                        var account = new Account()
+                        {
+                            CustomerId = signuprequest.PhoneNumber,
+                            AccountNumber=_commonLogic.GetAccountNumber(signuprequest.PhoneNumber),
+                            AccountName="",
+                            AccountType = SystemConstants.CustomerAccountType,
+                            CurrencyCode= country.CurrencyCode,
+                            AccountStatus=true,
+                            Balance=0,
+
+                        };
+                        await _dataBaseContext.AddAsync(newCustomer);
+                        await _dataBaseContext.AddAsync(userlogin);
+                        await _dataBaseContext.AddAsync(account);
+                        await _dataBaseContext.SaveChangesAsync();
+                        dbTran.Commit();
+                        return new BaseResponse() { ResponseCode = "200", ResponseMessage = "Your account has been created successfully" };
+                    }
+                    catch (Exception)
+                    {
+                        dbTran.Rollback();
+                        throw;
+                    }
+                }
             }
             catch (Exception ex)
             {

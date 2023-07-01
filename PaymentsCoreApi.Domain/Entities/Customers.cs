@@ -33,8 +33,7 @@ namespace PaymentsCoreApi.Domain.Entities
         public string? CustomerType { get; set; }
 
         [Column("customer_status")]
-        [StringLength(100)]
-        public string? CustomerStatus { get; set; }
+        public bool CustomerStatus { get; set; }
 
         [Column("country_code")]
         [StringLength(100)]
@@ -43,10 +42,6 @@ namespace PaymentsCoreApi.Domain.Entities
         [Column("user_id")]
         [StringLength(100)]
         public string? UserId { get; set; }
-
-        [Column("password")]
-        [StringLength(200)]
-        public string? Password { get; set; }
 
         [Column("phone_number")]
         [StringLength(100)]

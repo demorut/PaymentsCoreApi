@@ -9,6 +9,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using System.Diagnostics.Metrics;
 
 namespace PaymentsCoreApi.Logic.Implementations
 {
@@ -96,6 +97,13 @@ namespace PaymentsCoreApi.Logic.Implementations
             {
                 //do nothing
             }
+        }
+        public string GetAccountNumber(string customerId)
+        {
+            var timeNow = DateTime.Now;
+            string accountnumber = timeNow.ToString("yy") + accountDetails.ProductCode +
+                memberDetails.NssfNumber.Substring(memberDetails.NssfNumber.Length - 5) + timeNow.ToString("fff");
+            return accountnumber;
         }
     }
 }

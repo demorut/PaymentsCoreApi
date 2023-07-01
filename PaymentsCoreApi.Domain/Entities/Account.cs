@@ -38,8 +38,7 @@ namespace PaymentsCoreApi.Domain.Entities
         public string? CurrencyCode { get; set; }
 
         [Column("account_status")]
-        [StringLength(100)]
-        public string? AccountStatus { get; set; }
+        public bool AccountStatus { get; set; }
 
         [Column("balance")]
         public double Balance { get; set; }

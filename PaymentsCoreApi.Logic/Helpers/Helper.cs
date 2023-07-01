@@ -159,6 +159,24 @@ namespace PaymentsCoreApi.Logic.Helpers
             return Tuple.Create(encryptedPassword, Convert.ToBase64String(salt));
         }
 
+        public static string GenrateEncryptedPassword(string password,string saltstring)
+        {
+            // Generate a random salt
+            byte[] salt = Convert.FromBase64String(saltstring);
+
+            // Hash the password with the salt using PBKDF2 algorithm
+            byte[] hashedPassword = HashPassword(password, salt);
+
+            // Combine the salt and hashed password
+            byte[] saltedPassword = new byte[salt.Length + hashedPassword.Length];
+            Array.Copy(salt, saltedPassword, salt.Length);
+            Array.Copy(hashedPassword, 0, saltedPassword, salt.Length, hashedPassword.Length);
+
+            // Convert the salted password to Base64 string
+            string encryptedPassword = Convert.ToBase64String(saltedPassword);
+            return encryptedPassword;
+        }
+
         private static byte[] GenerateSalt()
         {
             // Generate a cryptographically secure random salt
