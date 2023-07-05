@@ -8,6 +8,9 @@ using Serilog;
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using PaymentsCoreApi.Logic.Interfaces;
+using PaymentsCoreApi.Logic.Implementations;
+
 try
 {
     var builder = WebApplication.CreateBuilder(args);
@@ -32,7 +35,13 @@ try
     builder.Services.AddMvcCore()
         .AddApiExplorer();
     builder.Services.AddVersionedApiExplorerExtension();
-    //builder.Services.AddScoped<IMemberManagmentService, MemberManagmentService>();
+    builder.Services.AddScoped<IAgentManagement, AgentManagement>();
+    builder.Services.AddScoped<IAuthenticationManagement, AuthenticationManagement>();
+    builder.Services.AddScoped<ICommonLogic, CommonLogic>();
+    builder.Services.AddScoped<ICustomerManagement, CustomerManagement>();
+    builder.Services.AddScoped<IDataManagement, DataManagement>();
+    builder.Services.AddScoped<IHttpServices, HttpServices>();
+    builder.Services.AddScoped<IUserAuthenticationManagement, UserAuthenticationManagement>();
     var app = builder.Build();
     if (app.Environment.IsDevelopment())
     {

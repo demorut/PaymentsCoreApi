@@ -198,6 +198,12 @@ namespace PaymentsCoreApi.Logic.Helpers
                 return pbkdf2.GetBytes(32); // 32 bytes = 256 bits (AES key size)
             }
         }
+
+        public static string GenerateAgentAccountNumber(string? agentId)
+        {
+            var now = DateTime.Now;
+            return agentId + now.ToString("MM")+now.ToString("dd")+now.ToString("HH")+now.ToString("mm")+now.ToString("ss"); 
+        }
     }
 }
 

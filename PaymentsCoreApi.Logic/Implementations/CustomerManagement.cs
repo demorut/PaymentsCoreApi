@@ -36,6 +36,10 @@ namespace PaymentsCoreApi.Logic.Implementations
                 if (customer != null)
                     return new BaseResponse() { ResponseCode = "100", ResponseMessage = "Phone Number or email already exists in the system, please reset password if you have forgotten it" };
 
+                var country = _dataBaseContext.Country.Where(c => c.CountryCode == request.CountryCode).FirstOrDefault();
+                if(country==null)
+                    return new BaseResponse() { ResponseCode = "100", ResponseMessage = "Selected Country is currently not supported" };
+
                 var otp = _commonLogic.GenerateOTP();
                 var passwordDetails=Helper.EncryptPassword(request.Password);
                 var newCustomer = new SignUpRequest()
@@ -153,9 +157,9 @@ namespace PaymentsCoreApi.Logic.Implementations
                     }
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                throw ex;
+                throw;
             }
         }
     }

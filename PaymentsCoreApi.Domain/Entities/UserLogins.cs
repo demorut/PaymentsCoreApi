@@ -20,6 +20,7 @@ namespace PaymentsCoreApi.Domain.Entities
         [StringLength(200)]
         public string CustomerId { get; set; }
 
+        [Key]
         [Column("Username")]
         [StringLength(200)]
         public string Username { get; set; }
@@ -46,5 +47,8 @@ namespace PaymentsCoreApi.Domain.Entities
 
         [Column("login_attempts")]
         public int LoginAttempts { get; set; }
+
+        [Column("reset_password")]
+        public bool ResetPassword{ get; set; }
     }
 }

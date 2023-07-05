@@ -34,8 +34,8 @@ namespace PaymentsCoreApi.Logic.Implementations
                 var credentails = _dataBaseContext.Channel.Where(c => c.ChannelKey == request.apikey).FirstOrDefault();
                 if (credentails != null)
                 {
-                    var inputstring = credentails.ChannelKey + credentails.ChannelSecretKey + request.requestdatetime;
-                    if (_commonLogic.IsValidCredentails(request.signature, inputstring))
+                    var inputstring = credentails.ChannelKey + credentails.ChannelSecretKey + request.RequestTimestamp;
+                    if (_commonLogic.IsValidCredentails(request.Signature, inputstring))
                     {
                         response = GenerateToken();
                     }

@@ -25,8 +25,15 @@ namespace PaymentsCoreApi.Controllers.v1
             var response = new BaseResponse();
             try
             {
-                response = await _customerManagement.InitiateCustomerSignUp(request);
-                return Ok(response);
+                var vaildation = request.IsValid();
+                if (vaildation.Item1)
+                {
+                    response = await _customerManagement.InitiateCustomerSignUp(request);
+                    return Ok(response);
+                }
+
+                else
+                    return Ok(new BaseResponse() { ResponseCode = "100", ResponseMessage = vaildation.Item2 });
             }
             catch (Exception ex)
             {

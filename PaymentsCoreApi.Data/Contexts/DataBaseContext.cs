@@ -29,6 +29,7 @@ namespace PaymentsCoreApi.Data.Contexts
         public DbSet<GeneralLedger> GeneralLedger { get; set; }
         public DbSet<Account> Account { get; set; }
         public DbSet<PasswordResetRequests> PasswordResetRequests { get; set; }
+        public DbSet<AgentSignUpRequest> AgentSignUpRequests { get; set; }
 
     }
 

@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using System.Diagnostics.Metrics;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace PaymentsCoreApi.Logic.Implementations
 {
@@ -101,8 +102,7 @@ namespace PaymentsCoreApi.Logic.Implementations
         public string GetAccountNumber(string customerId)
         {
             var timeNow = DateTime.Now;
-            string accountnumber = timeNow.ToString("yy") + accountDetails.ProductCode +
-                memberDetails.NssfNumber.Substring(memberDetails.NssfNumber.Length - 5) + timeNow.ToString("fff");
+            string accountnumber = timeNow.ToString("yy") + customerId.Substring(customerId.Length - 5)+ timeNow.ToString("dd") + timeNow.ToString("HH") + timeNow.ToString("mm")+ timeNow.ToString("fff");
             return accountnumber;
         }
     }
