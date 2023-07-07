@@ -8,14 +8,14 @@ using System.Threading.Tasks;
 
 namespace PaymentsCoreApi.Domain.Entities
 {
-
+    [Table("country")]
     public class Country:BaseEntity
     {
+        [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Column("record_id")]
         public long RecordId { get; set; }
-
-        [Key]
+       
         [Column("country_code")]
         [StringLength(100)]
         public string? CountryCode{ get; set; }

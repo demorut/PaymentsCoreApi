@@ -213,7 +213,7 @@ namespace PaymentsCoreApi.Logic.Implementations
                             CustomerId = agentrecord.AgentId,
                             AccountNumber = Helper.GenerateAgentAccountNumber(agentrecord.AgentId),
                             AccountName = "",
-                            AccountType = SystemConstants.CommissionAccountType,
+                            AccountType = SystemConstants.CommissionAccountcode,
                             CurrencyCode = country.CurrencyCode,
                             AccountStatus = true,
                             Balance = 0,

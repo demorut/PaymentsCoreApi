@@ -8,6 +8,5 @@ namespace PaymentsCoreApi.Domain.Dtos
 {
     public class AuthenticationRequestDto:BaseRequest
     {
-        public string? apikey { get; set; }
     }
 }

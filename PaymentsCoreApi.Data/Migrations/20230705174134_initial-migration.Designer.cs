@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PaymentsCoreApi.Data.Contexts;
 
@@ -10,9 +11,10 @@ using PaymentsCoreApi.Data.Contexts;
 namespace PaymentsCoreApi.Data.Migrations
 {
     [DbContext(typeof(DataBaseContext))]
-    partial class DataBaseContextModelSnapshot : ModelSnapshot
+    [Migration("20230705174134_initial-migration")]
+    partial class initialmigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -653,81 +655,6 @@ namespace PaymentsCoreApi.Data.Migrations
                     b.HasKey("RecordId");
 
                     b.ToTable("password_reset_requests");
-                });
-
-            modelBuilder.Entity("PaymentsCoreApi.Domain.Entities.Products", b =>
-                {
-                    b.Property<long>("RecordId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasColumnName("record_id");
-
-                    b.Property<bool>("Active")
-                        .HasColumnType("tinyint(1)")
-                        .HasColumnName("active");
-
-                    b.Property<bool>("Approved")
-                        .HasColumnType("tinyint(1)")
-                        .HasColumnName("approved");
-
-                    b.Property<string>("ApprovedBy")
-                        .HasMaxLength(50)
-                        .HasColumnType("varchar(50)")
-                        .HasColumnName("approved_by");
-
-                    b.Property<DateTime?>("ApprovedDate")
-                        .HasColumnType("datetime(6)")
-                        .HasColumnName("approved_date");
-
-                    b.Property<string>("CommissionAccount")
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100)")
-                        .HasColumnName("commission_account");
-
-                    b.Property<string>("CountryCode")
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100)")
-                        .HasColumnName("country_code");
-
-                    b.Property<string>("CreatedBy")
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100)")
-                        .HasColumnName("created_by");
-
-                    b.Property<string>("LastUpdatedBy")
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100)")
-                        .HasColumnName("last_updated_by");
-
-                    b.Property<DateTime?>("LastUpdatedDate")
-                        .HasColumnType("datetime(6)")
-                        .HasColumnName("last_updated_date");
-
-                    b.Property<string>("ProductCode")
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100)")
-                        .HasColumnName("product_code");
-
-                    b.Property<string>("ProductName")
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100)")
-                        .HasColumnName("product_name");
-
-                    b.Property<DateTime>("RecordDate")
-                        .HasColumnType("datetime(6)")
-                        .HasColumnName("record_date");
-
-                    b.Property<string>("SuspenseAccount")
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100)")
-                        .HasColumnName("suspense_account");
-
-                    b.HasKey("RecordId");
-
-                    b.HasIndex("ProductCode")
-                        .IsUnique();
-
-                    b.ToTable("products");
                 });
 
             modelBuilder.Entity("PaymentsCoreApi.Domain.Entities.SignUpRequest", b =>

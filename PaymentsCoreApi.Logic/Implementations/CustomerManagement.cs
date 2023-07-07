@@ -117,7 +117,11 @@ namespace PaymentsCoreApi.Logic.Implementations
                             RecordDate = DateTime.Now,
                             CustomerStatus = true,
                             CustomerType = SystemConstants.Customer,
-                            CountryCode = signuprequest.CountryCode
+                            CountryCode = signuprequest.CountryCode,
+                            CustomerId= signuprequest.PhoneNumber,
+                            Approved=true,
+                            ApprovedDate=DateTime.Now,
+                            ApprovedBy="Auto"
                         };
                         var userlogin = new UserLogins()
                         {
@@ -131,16 +135,18 @@ namespace PaymentsCoreApi.Logic.Implementations
                             LastPasswordChangeDate= DateTime.Now,
                             LoginAttempts=0,
                             LastLoginDate=DateTime.Now,
+                            Approved=true
                         };
                         var account = new Account()
                         {
                             CustomerId = signuprequest.PhoneNumber,
                             AccountNumber=_commonLogic.GetAccountNumber(signuprequest.PhoneNumber),
-                            AccountName="",
+                            AccountName= signuprequest.LastName+" "+signuprequest.FirstName,
                             AccountType = SystemConstants.CustomerAccountType,
                             CurrencyCode= country.CurrencyCode,
                             AccountStatus=true,
                             Balance=0,
+                            Approved=true
 
                         };
                         await _dataBaseContext.AddAsync(newCustomer);

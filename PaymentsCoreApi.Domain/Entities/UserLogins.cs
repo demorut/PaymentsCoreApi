@@ -11,7 +11,7 @@ namespace PaymentsCoreApi.Domain.Entities
     [Table("user_logins")]
     public class UserLogins:BaseEntity
     {
-
+        [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Column("record_id")]
         public long RecordId { get; set; }
@@ -19,8 +19,7 @@ namespace PaymentsCoreApi.Domain.Entities
         [Column("customer_id")]
         [StringLength(200)]
         public string CustomerId { get; set; }
-
-        [Key]
+       
         [Column("Username")]
         [StringLength(200)]
         public string Username { get; set; }

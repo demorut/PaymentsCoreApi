@@ -11,11 +11,11 @@ namespace PaymentsCoreApi.Domain.Entities
     [Table("customers")]
     public class Customers:BaseEntity
     {
+        [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Column("record_id")]
         public long RecordId { get; set; }
 
-        [Key]
         [Column("customer_id")]
         [StringLength(100)]
         public string? CustomerId { get; set; }

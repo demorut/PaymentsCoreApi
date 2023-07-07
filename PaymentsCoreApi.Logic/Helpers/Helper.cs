@@ -204,6 +204,12 @@ namespace PaymentsCoreApi.Logic.Helpers
             var now = DateTime.Now;
             return agentId + now.ToString("MM")+now.ToString("dd")+now.ToString("HH")+now.ToString("mm")+now.ToString("ss"); 
         }
+
+        public static string GetGLAccountNumber(string glcode)
+        {
+            var rand = new Random().Next(100000,999999);
+            return rand.ToString()+glcode;
+        }
     }
 }
 

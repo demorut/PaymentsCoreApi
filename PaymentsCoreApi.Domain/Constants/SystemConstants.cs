@@ -14,7 +14,9 @@ namespace PaymentsCoreApi.Domain.Constants
         public const string Customer = "CUSTOMER";
         public const string SignUpEmailSubject = "Customer SignUp";
         public const string CustomerAccountType = "NORMAL";
-        public const string CommissionAccountType = "NORMAL";
+        public const string SuspenseAccountType = "SUSPENSE";
+        public const string CommissionAccountcode = "COMM";
+        public const string SuspenseAccountcode = "GL";
         public const int PasswordExpiryDays = 365;
     }
 }

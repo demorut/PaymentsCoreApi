@@ -11,6 +11,9 @@ using System.Threading.Tasks;
 using System.Xml.Linq;
 using System.Diagnostics.Metrics;
 using static System.Net.Mime.MediaTypeNames;
+using PaymentsCoreApi.Domain.Constants;
+using System.Text.Json;
+using PaymentsCoreApi.Domain.Dtos;
 
 namespace PaymentsCoreApi.Logic.Implementations
 {
@@ -21,7 +24,9 @@ namespace PaymentsCoreApi.Logic.Implementations
         private readonly string smtphost = "smtp.gmail.com";
         private readonly int smtpport = 587;
         private readonly string senderEmail = "emorutdeogratius@gmail.com";
-        private readonly string senderPassword = "Password";
+        private readonly string senderPassword = "KevinDero@0825";
+        private readonly string smsUrl ="";
+        /*"https://esbinternal.nssfug.org/services/RegSMSSendService"*/
         public CommonLogic(DataBaseContext dataBaseContext, IHttpServices httpServices)
         {
             _dataBaseContext = dataBaseContext;
@@ -92,11 +97,16 @@ namespace PaymentsCoreApi.Logic.Implementations
         {
             try
             {
-
+                var Smsobject = new SmsObjectDto()
+                {
+                    content = smsmessage,
+                    destination = Helper.FormatPhoneNumber(phonenumber)
+                };
+                var response = _httpServices.SendHttpRequest(JsonSerializer.Serialize(Smsobject), "",smsUrl);
+                var resp = JsonSerializer.Deserialize<SmsResponseDto>(response.Result);
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
-                //do nothing
             }
         }
         public string GetAccountNumber(string customerId)

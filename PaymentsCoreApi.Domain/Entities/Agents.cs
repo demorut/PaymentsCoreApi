@@ -7,11 +7,11 @@ namespace PaymentsCoreApi.Domain.Entities
     [Table("agents")]
 	public class Agents:BaseEntity
 	{
+        [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Column("record_id")]
         public long RecordId { get; set; }
 
-        [Key]
         [Column("agent_id")]
         [StringLength(100)]
         public string? AgentId { get; set; }

@@ -17,10 +17,10 @@ namespace PaymentsCoreApi.Data.Migrations
                 name: "accounts",
                 columns: table => new
                 {
-                    account_number = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false),
                     record_id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
                     customer_id = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
+                    account_number = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
                     account_name = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
                     account_type = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
                     currency_code = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
@@ -36,7 +36,39 @@ namespace PaymentsCoreApi.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_accounts", x => x.account_number);
+                    table.PrimaryKey("PK_accounts", x => x.record_id);
+                })
+                .Annotation("MySQL:Charset", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "agents",
+                columns: table => new
+                {
+                    record_id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    agent_id = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
+                    agent_name = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
+                    contact_name = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
+                    agent_type = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
+                    agent_status = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    country_code = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
+                    phone_number = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
+                    email = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
+                    city = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
+                    street = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
+                    id_type = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
+                    id_number = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
+                    created_by = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
+                    record_date = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    last_updated_by = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
+                    last_updated_date = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    approved_by = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: true),
+                    approved_date = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    approved = table.Column<bool>(type: "tinyint(1)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_agents", x => x.record_id);
                 })
                 .Annotation("MySQL:Charset", "utf8mb4");
 
@@ -97,12 +129,12 @@ namespace PaymentsCoreApi.Data.Migrations
                 .Annotation("MySQL:Charset", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Country",
+                name: "country",
                 columns: table => new
                 {
-                    country_code = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false),
                     record_id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    country_code = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
                     country_name = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
                     currency_code = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
                     currency = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
@@ -116,7 +148,7 @@ namespace PaymentsCoreApi.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Country", x => x.country_code);
+                    table.PrimaryKey("PK_country", x => x.record_id);
                 })
                 .Annotation("MySQL:Charset", "utf8mb4");
 
@@ -124,9 +156,9 @@ namespace PaymentsCoreApi.Data.Migrations
                 name: "customers",
                 columns: table => new
                 {
-                    customer_id = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false),
                     record_id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    customer_id = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
                     first_name = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
                     last_name = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
                     customer_type = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
@@ -145,7 +177,7 @@ namespace PaymentsCoreApi.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_customers", x => x.customer_id);
+                    table.PrimaryKey("PK_customers", x => x.record_id);
                 })
                 .Annotation("MySQL:Charset", "utf8mb4");
 
@@ -265,10 +297,10 @@ namespace PaymentsCoreApi.Data.Migrations
                 name: "user_logins",
                 columns: table => new
                 {
-                    Username = table.Column<string>(type: "varchar(200)", maxLength: 200, nullable: false),
                     record_id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
                     customer_id = table.Column<string>(type: "varchar(200)", maxLength: 200, nullable: false),
+                    Username = table.Column<string>(type: "varchar(200)", maxLength: 200, nullable: false),
                     password = table.Column<string>(type: "varchar(200)", maxLength: 200, nullable: false),
                     rand_code = table.Column<string>(type: "varchar(200)", maxLength: 200, nullable: false),
                     reset = table.Column<bool>(type: "tinyint(1)", nullable: false),
@@ -287,9 +319,39 @@ namespace PaymentsCoreApi.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_user_logins", x => x.Username);
+                    table.PrimaryKey("PK_user_logins", x => x.record_id);
                 })
                 .Annotation("MySQL:Charset", "utf8mb4");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_accounts_account_number",
+                table: "accounts",
+                column: "account_number",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_agents_agent_id",
+                table: "agents",
+                column: "agent_id",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_country_country_code",
+                table: "country",
+                column: "country_code",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_customers_customer_id",
+                table: "customers",
+                column: "customer_id",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_user_logins_Username",
+                table: "user_logins",
+                column: "Username",
+                unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -298,13 +360,16 @@ namespace PaymentsCoreApi.Data.Migrations
                 name: "accounts");
 
             migrationBuilder.DropTable(
+                name: "agents");
+
+            migrationBuilder.DropTable(
                 name: "agents_signup_requests");
 
             migrationBuilder.DropTable(
                 name: "channels");
 
             migrationBuilder.DropTable(
-                name: "Country");
+                name: "country");
 
             migrationBuilder.DropTable(
                 name: "customers");

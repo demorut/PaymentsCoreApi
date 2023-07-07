@@ -23,9 +23,9 @@ namespace PaymentsCoreApi.Extensions
                     Description = "This Api will be responsible for overall data distribution and authorization.",
                     Contact = new OpenApiContact
                     {
-                        Name = "Jane Doe",
-                        Email = "jdoe@janedoe.com",
-                        Url = new Uri("https://janedoe.com/contact"),
+                        Name = "Kynet",
+                        Email = "info@kynet.com",
+                        Url = new Uri("https://kynet.com/contact"),
                     }
                 });
                 c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme

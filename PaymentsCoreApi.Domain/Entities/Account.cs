@@ -11,7 +11,7 @@ namespace PaymentsCoreApi.Domain.Entities
     [Table("accounts")]
     public class Account:BaseEntity
     {
-
+        [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Column("record_id")]
         public long RecordId { get; set; }
@@ -19,8 +19,7 @@ namespace PaymentsCoreApi.Domain.Entities
         [Column("customer_id")]
         [StringLength(100)]
         public string? CustomerId { get; set; }
-
-        [Key]
+        
         [Column("account_number")]
         [StringLength(100)]
         public string? AccountNumber { get; set; }

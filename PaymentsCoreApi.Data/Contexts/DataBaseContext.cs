@@ -20,6 +20,32 @@ namespace PaymentsCoreApi.Data.Contexts
             base.OnConfiguring(optionsBuilder);
         }
 
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            builder.Entity<Customers>()
+                .HasIndex(u => u.CustomerId)
+                .IsUnique();
+
+            builder.Entity<Account>()
+                .HasIndex(u => u.AccountNumber)
+                .IsUnique();
+
+                .HasIndex(u => u.AgentId)
+                .IsUnique();
+
+            builder.Entity<Country>()
+                .HasIndex(u => u.CountryCode)
+                .IsUnique();
+
+            builder.Entity<UserLogins>()
+               .HasIndex(u => u.Username)
+               .IsUnique();
+
+            builder.Entity<Products>()
+              .HasIndex(u => u.ProductCode)
+              .IsUnique();
+        }
+
         public DbSet<Channel> Channel { get; set; }
         public DbSet<Customers> Customers { get; set; }
         public DbSet<SignUpRequest> SignUpRequest { get; set; }
@@ -30,6 +56,7 @@ namespace PaymentsCoreApi.Data.Contexts
         public DbSet<Account> Account { get; set; }
         public DbSet<PasswordResetRequests> PasswordResetRequests { get; set; }
         public DbSet<AgentSignUpRequest> AgentSignUpRequests { get; set; }
+        public DbSet<Products> Products { get; set; }
 
     }
 

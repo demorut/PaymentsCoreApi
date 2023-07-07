@@ -15,7 +15,7 @@ namespace PaymentsCoreApi.Controllers.v1
         }
 
         [HttpPost]
-        [Authorize]
+        //[Authorize]
         [ActionName("initiate_customer_signup")]
         [ProducesResponseType(typeof(BaseResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(BaseResponse), StatusCodes.Status401Unauthorized)]
@@ -44,7 +44,7 @@ namespace PaymentsCoreApi.Controllers.v1
         }
 
         [HttpPost]
-        [Authorize]
+        //[Authorize]
         [ActionName("Complete_customer_signup")]
         [ProducesResponseType(typeof(BaseResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(BaseResponse), StatusCodes.Status401Unauthorized)]

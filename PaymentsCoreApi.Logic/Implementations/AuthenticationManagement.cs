@@ -31,7 +31,7 @@ namespace PaymentsCoreApi.Logic.Implementations
             try
             {
                 var response = new AuthenticationResponseDto();
-                var credentails = _dataBaseContext.Channel.Where(c => c.ChannelKey == request.apikey).FirstOrDefault();
+                var credentails = _dataBaseContext.Channel.Where(c => c.ChannelKey == request.Apikey).FirstOrDefault();
                 if (credentails != null)
                 {
                     var inputstring = credentails.ChannelKey + credentails.ChannelSecretKey + request.RequestTimestamp;

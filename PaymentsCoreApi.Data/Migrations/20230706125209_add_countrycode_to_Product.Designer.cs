@@ -11,8 +11,8 @@ using PaymentsCoreApi.Data.Contexts;
 namespace PaymentsCoreApi.Data.Migrations
 {
     [DbContext(typeof(DataBaseContext))]
-    [Migration("20230704201249_initial-migration")]
-    partial class initialmigration
+    [Migration("20230706125209_add_countrycode_to_Product")]
+    partial class add_countrycode_to_Product
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -23,15 +23,20 @@ namespace PaymentsCoreApi.Data.Migrations
 
             modelBuilder.Entity("PaymentsCoreApi.Domain.Entities.Account", b =>
                 {
-                    b.Property<string>("AccountNumber")
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100)")
-                        .HasColumnName("account_number");
+                    b.Property<long>("RecordId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasColumnName("record_id");
 
                     b.Property<string>("AccountName")
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)")
                         .HasColumnName("account_name");
+
+                    b.Property<string>("AccountNumber")
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)")
+                        .HasColumnName("account_number");
 
                     b.Property<bool>("AccountStatus")
                         .HasColumnType("tinyint(1)")
@@ -87,14 +92,117 @@ namespace PaymentsCoreApi.Data.Migrations
                         .HasColumnType("datetime(6)")
                         .HasColumnName("record_date");
 
+                    b.HasKey("RecordId");
+
+                    b.HasIndex("AccountNumber")
+                        .IsUnique();
+
+                    b.ToTable("accounts");
+                });
+
+            modelBuilder.Entity("PaymentsCoreApi.Domain.Entities.Agents", b =>
+                {
                     b.Property<long>("RecordId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint")
                         .HasColumnName("record_id");
 
-                    b.HasKey("AccountNumber");
+                    b.Property<string>("AgentId")
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)")
+                        .HasColumnName("agent_id");
 
-                    b.ToTable("accounts");
+                    b.Property<string>("AgentName")
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)")
+                        .HasColumnName("agent_name");
+
+                    b.Property<bool>("AgentStatus")
+                        .HasColumnType("tinyint(1)")
+                        .HasColumnName("agent_status");
+
+                    b.Property<string>("AgentType")
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)")
+                        .HasColumnName("agent_type");
+
+                    b.Property<bool>("Approved")
+                        .HasColumnType("tinyint(1)")
+                        .HasColumnName("approved");
+
+                    b.Property<string>("ApprovedBy")
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)")
+                        .HasColumnName("approved_by");
+
+                    b.Property<DateTime?>("ApprovedDate")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("approved_date");
+
+                    b.Property<string>("City")
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)")
+                        .HasColumnName("city");
+
+                    b.Property<string>("ContactName")
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)")
+                        .HasColumnName("contact_name");
+
+                    b.Property<string>("CountryCode")
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)")
+                        .HasColumnName("country_code");
+
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)")
+                        .HasColumnName("created_by");
+
+                    b.Property<string>("Email")
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)")
+                        .HasColumnName("email");
+
+                    b.Property<string>("IdNumber")
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)")
+                        .HasColumnName("id_number");
+
+                    b.Property<string>("IdType")
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)")
+                        .HasColumnName("id_type");
+
+                    b.Property<string>("LastUpdatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)")
+                        .HasColumnName("last_updated_by");
+
+                    b.Property<DateTime?>("LastUpdatedDate")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("last_updated_date");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)")
+                        .HasColumnName("phone_number");
+
+                    b.Property<DateTime>("RecordDate")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("record_date");
+
+                    b.Property<string>("Street")
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)")
+                        .HasColumnName("street");
+
+                    b.HasKey("RecordId");
+
+                    b.HasIndex("AgentId")
+                        .IsUnique();
+
+                    b.ToTable("agents");
                 });
 
             modelBuilder.Entity("PaymentsCoreApi.Domain.Entities.AgentSignUpRequest", b =>
@@ -264,10 +372,10 @@ namespace PaymentsCoreApi.Data.Migrations
 
             modelBuilder.Entity("PaymentsCoreApi.Domain.Entities.Country", b =>
                 {
-                    b.Property<string>("CountryCode")
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100)")
-                        .HasColumnName("country_code");
+                    b.Property<long>("RecordId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasColumnName("record_id");
 
                     b.Property<bool>("Approved")
                         .HasColumnType("tinyint(1)")
@@ -281,6 +389,11 @@ namespace PaymentsCoreApi.Data.Migrations
                     b.Property<DateTime?>("ApprovedDate")
                         .HasColumnType("datetime(6)")
                         .HasColumnName("approved_date");
+
+                    b.Property<string>("CountryCode")
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)")
+                        .HasColumnName("country_code");
 
                     b.Property<string>("CountryName")
                         .HasMaxLength(100)
@@ -315,22 +428,20 @@ namespace PaymentsCoreApi.Data.Migrations
                         .HasColumnType("datetime(6)")
                         .HasColumnName("record_date");
 
-                    b.Property<long>("RecordId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasColumnName("record_id");
+                    b.HasKey("RecordId");
 
-                    b.HasKey("CountryCode");
+                    b.HasIndex("CountryCode")
+                        .IsUnique();
 
-                    b.ToTable("Country");
+                    b.ToTable("country");
                 });
 
             modelBuilder.Entity("PaymentsCoreApi.Domain.Entities.Customers", b =>
                 {
-                    b.Property<string>("CustomerId")
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100)")
-                        .HasColumnName("customer_id");
+                    b.Property<long>("RecordId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasColumnName("record_id");
 
                     b.Property<bool>("Approved")
                         .HasColumnType("tinyint(1)")
@@ -354,6 +465,11 @@ namespace PaymentsCoreApi.Data.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)")
                         .HasColumnName("created_by");
+
+                    b.Property<string>("CustomerId")
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)")
+                        .HasColumnName("customer_id");
 
                     b.Property<bool>("CustomerStatus")
                         .HasColumnType("tinyint(1)")
@@ -397,17 +513,15 @@ namespace PaymentsCoreApi.Data.Migrations
                         .HasColumnType("datetime(6)")
                         .HasColumnName("record_date");
 
-                    b.Property<long>("RecordId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasColumnName("record_id");
-
                     b.Property<string>("UserId")
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)")
                         .HasColumnName("user_id");
 
-                    b.HasKey("CustomerId");
+                    b.HasKey("RecordId");
+
+                    b.HasIndex("CustomerId")
+                        .IsUnique();
 
                     b.ToTable("customers");
                 });
@@ -541,6 +655,81 @@ namespace PaymentsCoreApi.Data.Migrations
                     b.HasKey("RecordId");
 
                     b.ToTable("password_reset_requests");
+                });
+
+            modelBuilder.Entity("PaymentsCoreApi.Domain.Entities.Products", b =>
+                {
+                    b.Property<long>("RecordId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasColumnName("record_id");
+
+                    b.Property<bool>("Active")
+                        .HasColumnType("tinyint(1)")
+                        .HasColumnName("active");
+
+                    b.Property<bool>("Approved")
+                        .HasColumnType("tinyint(1)")
+                        .HasColumnName("approved");
+
+                    b.Property<string>("ApprovedBy")
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)")
+                        .HasColumnName("approved_by");
+
+                    b.Property<DateTime?>("ApprovedDate")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("approved_date");
+
+                    b.Property<string>("CommissionAccount")
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)")
+                        .HasColumnName("commission_account");
+
+                    b.Property<string>("CountryCode")
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)")
+                        .HasColumnName("country_code");
+
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)")
+                        .HasColumnName("created_by");
+
+                    b.Property<string>("LastUpdatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)")
+                        .HasColumnName("last_updated_by");
+
+                    b.Property<DateTime?>("LastUpdatedDate")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("last_updated_date");
+
+                    b.Property<string>("ProductCode")
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)")
+                        .HasColumnName("product_code");
+
+                    b.Property<string>("ProductName")
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)")
+                        .HasColumnName("product_name");
+
+                    b.Property<DateTime>("RecordDate")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("record_date");
+
+                    b.Property<string>("SuspenseAccount")
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)")
+                        .HasColumnName("suspense_account");
+
+                    b.HasKey("RecordId");
+
+                    b.HasIndex("ProductCode")
+                        .IsUnique();
+
+                    b.ToTable("products");
                 });
 
             modelBuilder.Entity("PaymentsCoreApi.Domain.Entities.SignUpRequest", b =>
@@ -745,10 +934,10 @@ namespace PaymentsCoreApi.Data.Migrations
 
             modelBuilder.Entity("PaymentsCoreApi.Domain.Entities.UserLogins", b =>
                 {
-                    b.Property<string>("Username")
-                        .HasMaxLength(200)
-                        .HasColumnType("varchar(200)")
-                        .HasColumnName("Username");
+                    b.Property<long>("RecordId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasColumnName("record_id");
 
                     b.Property<bool>("Active")
                         .HasColumnType("tinyint(1)")
@@ -815,11 +1004,6 @@ namespace PaymentsCoreApi.Data.Migrations
                         .HasColumnType("datetime(6)")
                         .HasColumnName("record_date");
 
-                    b.Property<long>("RecordId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasColumnName("record_id");
-
                     b.Property<bool>("Reset")
                         .HasColumnType("tinyint(1)")
                         .HasColumnName("reset");
@@ -828,7 +1012,16 @@ namespace PaymentsCoreApi.Data.Migrations
                         .HasColumnType("tinyint(1)")
                         .HasColumnName("reset_password");
 
-                    b.HasKey("Username");
+                    b.Property<string>("Username")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("varchar(200)")
+                        .HasColumnName("Username");
+
+                    b.HasKey("RecordId");
+
+                    b.HasIndex("Username")
+                        .IsUnique();
 
                     b.ToTable("user_logins");
                 });
