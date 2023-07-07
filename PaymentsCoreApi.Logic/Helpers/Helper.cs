@@ -88,7 +88,7 @@ namespace PaymentsCoreApi.Logic.Helpers
                 string formatedphone = FormatPhoneNumberNonCoded(phoneNumber);
                 return formatedphone.Substring(0, 2);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return "";
             }
@@ -210,6 +210,28 @@ namespace PaymentsCoreApi.Logic.Helpers
             var rand = new Random().Next(100000,999999);
             return rand.ToString()+glcode;
         }
+        public static string GetAgentId(long recordId)
+        {
+            try
+            {
+                if (recordId.ToString().Length == 1)
+                    return "10000" + recordId.ToString();
+                else if (recordId.ToString().Length == 2)
+                    return "1000" + recordId.ToString();
+                else if (recordId.ToString().Length == 3)
+                    return "100" + recordId.ToString();
+                else if (recordId.ToString().Length == 4)
+                    return "10" + recordId.ToString();
+                else if (recordId.ToString().Length == 5)
+                    return "1" + recordId.ToString();
+                else
+                    return recordId.ToString();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }        
     }
 }
 

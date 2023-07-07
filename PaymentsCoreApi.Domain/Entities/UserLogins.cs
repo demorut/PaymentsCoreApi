@@ -49,5 +49,9 @@ namespace PaymentsCoreApi.Domain.Entities
 
         [Column("reset_password")]
         public bool ResetPassword{ get; set; }
+
+        [Column("user_type")]
+        [StringLength(20)]
+        public string UserType {get;set;}
     }
 }

@@ -78,9 +78,9 @@ namespace PaymentsCoreApi.Logic.Implementations
                 };
                 return userdetails;
             }
-            catch(Exception ex)
+            catch(Exception)
             {
-                throw ex;
+                throw;
             }
         }
 

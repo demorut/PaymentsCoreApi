@@ -1,3 +1,6 @@
 {
-    "dotnet.defaultSolution": "PaymentsCoreApi.sln"
+    "dotnet.defaultSolution": "PaymentsCoreApi.sln",
+    "cSpell.words": [
+        "Dtos"
+    ]
 }

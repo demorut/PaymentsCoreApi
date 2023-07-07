@@ -11,7 +11,7 @@ namespace PaymentsCoreApi.Logic.Implementations
 
         public async Task<string> SendHttpRequest(string request, string token, string url)
         {
-            HttpResponseMessage response = new HttpResponseMessage();
+            var response = new HttpResponseMessage();
             try
             {
                 var handler = new HttpClientHandler()
@@ -27,7 +27,7 @@ namespace PaymentsCoreApi.Logic.Implementations
                 response.EnsureSuccessStatusCode();
                 return await response.Content.ReadAsStringAsync();
             }
-            catch (HttpRequestException ex)
+            catch (HttpRequestException)
             {
                 return await response.Content.ReadAsStringAsync();
             }

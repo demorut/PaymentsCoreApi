@@ -19,8 +19,8 @@ namespace PaymentsCoreApi.Logic.Implementations
 {
     public class CommonLogic:ICommonLogic
     {
-        private IHttpServices _httpServices;
-        private DataBaseContext _dataBaseContext;
+        private readonly IHttpServices _httpServices;
+        private readonly DataBaseContext _dataBaseContext;
         private readonly string smtphost = "smtp.gmail.com";
         private readonly int smtpport = 587;
         private readonly string senderEmail = "emorutdeogratius@gmail.com";
@@ -102,10 +102,10 @@ namespace PaymentsCoreApi.Logic.Implementations
                     content = smsmessage,
                     destination = Helper.FormatPhoneNumber(phonenumber)
                 };
-                var response = _httpServices.SendHttpRequest(JsonSerializer.Serialize(Smsobject), "",smsUrl);
-                var resp = JsonSerializer.Deserialize<SmsResponseDto>(response.Result);
+                var response = await _httpServices.SendHttpRequest(JsonSerializer.Serialize(Smsobject), "",smsUrl);
+                var resp = JsonSerializer.Deserialize<SmsResponseDto>(response);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
             }
         }

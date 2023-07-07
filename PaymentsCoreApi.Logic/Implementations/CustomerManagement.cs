@@ -78,9 +78,9 @@ namespace PaymentsCoreApi.Logic.Implementations
                     ResponseId = customerlog.Entity.RecordId.ToString()
                 };
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                throw ex;
+                throw;
             }
         }
 

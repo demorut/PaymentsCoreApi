@@ -11,6 +11,7 @@ using PaymentsCoreApi.Domain.Constants;
 using System.Diagnostics.Metrics;
 using static System.Net.WebRequestMethods;
 using System.Xml.Linq;
+
 using System.Xml.XPath;
 
 namespace PaymentsCoreApi.Logic.Implementations
@@ -29,12 +30,12 @@ namespace PaymentsCoreApi.Logic.Implementations
         {
             try
             {
-                var credentails = _dataBaseContext.Channel.Where(c => c.ChannelKey == request.Apikey).FirstOrDefault();
-                if (credentails == null)
+                var credentials = _dataBaseContext.Channel.Where(c => c.ChannelKey == request.Apikey).FirstOrDefault();
+                if (credentials == null)
                     return new BaseResponse()
                     { ResponseCode = "100", ResponseMessage = "System access denied" };
 
-                var inputstring = credentails.ChannelKey + credentails.ChannelSecretKey + request.IdNumber + request.PhoneNumber + request.RequestTimestamp;
+                var inputstring = credentials.ChannelKey + credentials.ChannelSecretKey + request.IdNumber + request.PhoneNumber + request.RequestTimestamp;
                 if (!_commonLogic.IsValidCredentails(request.Signature, inputstring))
                     return new BaseResponse()
                     { ResponseCode = "100", ResponseMessage = "System access denied" };
@@ -65,7 +66,7 @@ namespace PaymentsCoreApi.Logic.Implementations
                     {
                         var record = await _dataBaseContext.AddAsync(agentrequest);
                         await _dataBaseContext.SaveChangesAsync();
-                        var agentId = GetAgentId(record.Entity.RecordId);
+                        var agentId = Helper.GetAgentId(record.Entity.RecordId);
 
                         record.Entity.AgentId = agentId;
                         _dataBaseContext.AgentSignUpRequests.Attach(record.Entity);
@@ -87,28 +88,6 @@ namespace PaymentsCoreApi.Logic.Implementations
             }
         }
 
-        private string GetAgentId(long recordId)
-        {
-            try
-            {
-                if (recordId.ToString().Length == 1)
-                    return "10000" + recordId.ToString();
-                else if (recordId.ToString().Length == 2)
-                    return "1000" + recordId.ToString();
-                else if (recordId.ToString().Length == 3)
-                    return "100" + recordId.ToString();
-                else if (recordId.ToString().Length == 4)
-                    return "10" + recordId.ToString();
-                else if (recordId.ToString().Length == 5)
-                    return "1" + recordId.ToString();
-                else
-                    return recordId.ToString();
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
         public async Task<BaseResponse> ApproveorRejectAgent(AgentApprovalRequestDto request)
         {
             try
@@ -134,7 +113,7 @@ namespace PaymentsCoreApi.Logic.Implementations
 
                 if (request.ApprovalStatus.Equals(SystemConstants.Approved))
                 {
-                    createAgentProfile(agentrecord, country,request);
+                    await CreateAgentProfile(agentrecord, country,request);
                     return new BaseResponse() { ResponseCode = "200", ResponseMessage = "The agent application request has been approved successful" };
                 }
                 else
@@ -157,7 +136,7 @@ namespace PaymentsCoreApi.Logic.Implementations
             }
         }
 
-        private void createAgentProfile(AgentSignUpRequest agentrecord,Country country, AgentApprovalRequestDto request)
+        private async Task CreateAgentProfile(AgentSignUpRequest agentrecord,Country country, AgentApprovalRequestDto request)
         {
             try {
                 using (var dbTran = _dataBaseContext.Database.BeginTransaction())
@@ -230,12 +209,12 @@ namespace PaymentsCoreApi.Logic.Implementations
                                 DocumentExtension=document.DocumentExtension,
                                 DocumentPath=document.DocumentPath
                             };
-                            _dataBaseContext.AddAsync(agent);
+                            await _dataBaseContext.AddAsync(agent);
                         }
-                        _dataBaseContext.AddAsync(agent);
-                        _dataBaseContext.AddAsync(userlogin);
-                        _dataBaseContext.AddAsync(account);
-                        _dataBaseContext.AddAsync(account);
+                        await _dataBaseContext.AddAsync(agent);
+                        await _dataBaseContext.AddAsync(userlogin);
+                        await _dataBaseContext.AddAsync(account);
+                        await _dataBaseContext.AddAsync(account);
                         agentrecord.AgentStatus = request.ApprovalStatus;
                         agentrecord.ApprovedDate = DateTime.Now;
                         agentrecord.ApprovedBy = request.ApprovedBy;
@@ -243,13 +222,13 @@ namespace PaymentsCoreApi.Logic.Implementations
                         _dataBaseContext.Entry(agentrecord).Property(x => x.AgentStatus).IsModified = true;
                         _dataBaseContext.Entry(agentrecord).Property(x => x.ApprovedDate).IsModified = true;
                         _dataBaseContext.Entry(agentrecord).Property(x => x.ApprovedBy).IsModified = true;
-                        _dataBaseContext.SaveChangesAsync();
+                        await _dataBaseContext.SaveChangesAsync();
                         dbTran.Commit();
 
                         if (!String.IsNullOrEmpty(agentrecord.PhoneNumber))
                         {
                             var smsmessage = "Hello! " + agentrecord.ContactName + " your agent id  is "+agentrecord.AgentId +"and your password is "+ password;
-                            _commonLogic.SendSmsNotification(Helper.FormatPhoneNumber(agentrecord.PhoneNumber), smsmessage);
+                            await _commonLogic.SendSmsNotification(Helper.FormatPhoneNumber(agentrecord.PhoneNumber), smsmessage);
                         }
                     }
                     catch (Exception)

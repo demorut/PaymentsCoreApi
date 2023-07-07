@@ -28,7 +28,7 @@ namespace PaymentsCoreApi.Controllers
                 else
                     return Unauthorized(response);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 response.access_token = "";
                 response.expires_in = "";

@@ -15,9 +15,9 @@ namespace PaymentsCoreApi.Logic.Implementations
 {
     public class AuthenticationManagement: IAuthenticationManagement
     {
-        private DataBaseContext _dataBaseContext;
-        private IDataManagement _datamanagement;
-        private ICommonLogic _commonLogic;
+        private readonly DataBaseContext _dataBaseContext;
+        private readonly IDataManagement _datamanagement;
+        private readonly ICommonLogic _commonLogic;
         private readonly IConfiguration _config;
         public AuthenticationManagement(DataBaseContext dataBaseContext,IDataManagement datamanagement, ICommonLogic commonLogic, IConfiguration config)
         {
