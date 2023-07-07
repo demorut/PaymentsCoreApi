@@ -30,6 +30,7 @@ namespace PaymentsCoreApi.Data.Contexts
                 .HasIndex(u => u.AccountNumber)
                 .IsUnique();
 
+            builder.Entity<Agents>()
                 .HasIndex(u => u.AgentId)
                 .IsUnique();
 
