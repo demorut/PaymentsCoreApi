@@ -45,8 +45,12 @@ namespace PaymentsCoreApi.Data.Contexts
             builder.Entity<Products>()
               .HasIndex(u => u.ProductCode)
               .IsUnique();
-        }
 
+            builder.Entity<Vendors>()
+             .HasIndex(u => u.VendorCode)
+             .IsUnique();
+        }
+        public DbSet<Vendors> Vendors { get; set; }
         public DbSet<Channel> Channel { get; set; }
         public DbSet<Customers> Customers { get; set; }
         public DbSet<SignUpRequest> SignUpRequest { get; set; }
@@ -58,7 +62,7 @@ namespace PaymentsCoreApi.Data.Contexts
         public DbSet<PasswordResetRequests> PasswordResetRequests { get; set; }
         public DbSet<AgentSignUpRequest> AgentSignUpRequests { get; set; }
         public DbSet<Products> Products { get; set; }
-
+        public DbSet<ThirdPartyDeposits> ThirdPartyDeposits{get;set;}
     }
 
 }

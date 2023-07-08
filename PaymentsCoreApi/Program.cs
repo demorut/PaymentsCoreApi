@@ -43,6 +43,8 @@ try
     builder.Services.AddScoped<IHttpServices, HttpServices>();
     builder.Services.AddScoped<IUserAuthenticationManagement, UserAuthenticationManagement>();
     builder.Services.AddScoped<IProductManagement, ProductManagement>();
+    builder.Services.AddScoped<IVendorManagement, VendorManagement>();
+    builder.Services.AddScoped<ITransactionManagement, TransactionManagement>();
     var app = builder.Build();
     if (app.Environment.IsDevelopment())
     {

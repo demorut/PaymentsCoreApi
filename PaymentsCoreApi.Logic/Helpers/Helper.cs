@@ -231,7 +231,12 @@ namespace PaymentsCoreApi.Logic.Helpers
             {
                 throw;
             }
-        }        
+        }
+
+        internal static string GenerateTransactionId()
+        {
+            return DateTime.Now.ToString("yyyyyMMddHHmmssfff");
+        }
     }
 }
 
