@@ -20,7 +20,7 @@ namespace PaymentsCoreApi.Controllers.v1
         }
 
         [HttpPost]
-        [Authorize]
+        //[Authorize]
         [ActionName("add_vendor")]
         [ProducesResponseType(typeof(BaseResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(BaseResponse), StatusCodes.Status401Unauthorized)]

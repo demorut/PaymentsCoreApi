@@ -7,7 +7,7 @@ using PaymentsCoreApi.Logic.Interfaces;
 
 namespace PaymentsCoreApi.Controllers.v1
 {
-    public class UserAuthenticationController : Controller
+    public class UserAuthenticationController : BaseApiController
     {
         private IUserAuthenticationManagement _userAuthenticationManagement;
         public UserAuthenticationController(IUserAuthenticationManagement userAuthenticationManagement)
