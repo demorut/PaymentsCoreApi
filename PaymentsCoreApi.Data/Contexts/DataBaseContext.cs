@@ -63,6 +63,10 @@ namespace PaymentsCoreApi.Data.Contexts
         public DbSet<AgentSignUpRequest> AgentSignUpRequests { get; set; }
         public DbSet<Products> Products { get; set; }
         public DbSet<ThirdPartyDeposits> ThirdPartyDeposits{get;set;}
+        public DbSet<Agents> Agents { get; set; }
+        public DbSet<UserDocuments> UserDocuments { get; set; }
+
+
     }
 
 }

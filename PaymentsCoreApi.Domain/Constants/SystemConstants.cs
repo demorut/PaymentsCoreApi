@@ -18,5 +18,6 @@ namespace PaymentsCoreApi.Domain.Constants
         public const string CommissionAccountcode = "COMM";
         public const string SuspenseAccountcode = "GL";
         public const int PasswordExpiryDays = 365;
+        public const string GetPairedItemSp = "GetPairedItems";
     }
 }

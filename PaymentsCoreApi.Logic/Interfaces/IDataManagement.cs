@@ -12,6 +12,8 @@ namespace PaymentsCoreApi.Logic.Interfaces
     {
         Task<QueryResponseDto> ExecuteNonQuery(QueryRequestDto request);
         Task<QueryResponseDto> ExecuteQuery(QueryRequestDto request);
+        Task<PairedItemResponse> GetPariedItems(PairedItemRequest request);
+
         //Task<GeneralLegerDto> GetPendingGlRequest();
         Task<DataTable> InternalExecuteQuery(QueryRequestDto request);
     }

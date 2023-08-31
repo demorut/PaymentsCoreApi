@@ -43,6 +43,63 @@ namespace PaymentsCoreApi.Controllers.v1
                 return Ok(response);
             }
         }
-        
+
+        [HttpPost]
+        //[Authorize]
+        [ActionName("make_bill_payment")]
+        [ProducesResponseType(typeof(BaseResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(BaseResponse), StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(typeof(BaseResponse), StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> MakeBillPayment(ThirdPartyDepositRequestDto request)
+        {
+            var response = new BaseResponse();
+            try
+            {
+                var vaildation = request.IsValid();
+                if (vaildation.Item1)
+                {
+                    response = await _transactionManagement.MakeThridPartyDeposit(request);
+                    return Ok(response);
+                }
+                else
+                    return Ok(new BaseResponse() { ResponseCode = "100", ResponseMessage = vaildation.Item2 });
+
+            }
+            catch (Exception ex)
+            {
+                response.ResponseCode = "100";
+                response.ResponseMessage = "Sorry!, Service is currently unavailable please try again later ";
+                return Ok(response);
+            }
+        }
+
+        [HttpPost]
+        //[Authorize]
+        [ActionName("make_Internal_transfer")]
+        [ProducesResponseType(typeof(BaseResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(BaseResponse), StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(typeof(BaseResponse), StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> MakeInternalTransfer(ThirdPartyDepositRequestDto request)
+        {
+            var response = new BaseResponse();
+            try
+            {
+                var vaildation = request.IsValid();
+                if (vaildation.Item1)
+                {
+                    response = await _transactionManagement.MakeThridPartyDeposit(request);
+                    return Ok(response);
+                }
+                else
+                    return Ok(new BaseResponse() { ResponseCode = "100", ResponseMessage = vaildation.Item2 });
+
+            }
+            catch (Exception ex)
+            {
+                response.ResponseCode = "100";
+                response.ResponseMessage = "Sorry!, Service is currently unavailable please try again later ";
+                return Ok(response);
+            }
+        }
     }
 }

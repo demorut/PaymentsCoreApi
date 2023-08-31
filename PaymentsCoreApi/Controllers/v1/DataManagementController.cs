@@ -20,7 +20,6 @@ namespace PaymentsCoreApi.Controllers.v1
         }
 
         [HttpPost]
-        [Authorize]
         [ActionName("execute_query")]
         [ProducesResponseType(typeof(QueryResponseDto), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(QueryResponseDto), StatusCodes.Status401Unauthorized)]
@@ -46,7 +45,6 @@ namespace PaymentsCoreApi.Controllers.v1
         }
 
         [HttpPost]
-        [Authorize]
         [ActionName("execute_non_query")]
         [ProducesResponseType(typeof(QueryResponseDto), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(QueryResponseDto), StatusCodes.Status401Unauthorized)]
@@ -68,6 +66,25 @@ namespace PaymentsCoreApi.Controllers.v1
             catch (Exception ex)
             {
                 return Ok(new QueryResponseDto() { ResponseCode = "100", ResponseMessage = ex.Message, Data = "" });
+            }
+        }
+
+        [HttpPost]
+        [ActionName("get_paired_items")]
+        [ProducesResponseType(typeof(PairedItemResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(PairedItemResponse), StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(typeof(PairedItemResponse), StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> GetPairedItems(PairedItemRequest request)
+        {
+            var response = new PairedItemResponse();
+            try
+            {
+                    response = await _dataManagement.GetPariedItems(request);
+                    return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return Ok(new PairedItemResponse() { ResponseCode = "100", ResponseMessage = ex.Message});
             }
         }
     }

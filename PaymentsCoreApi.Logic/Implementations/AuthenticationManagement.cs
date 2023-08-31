@@ -44,7 +44,6 @@ namespace PaymentsCoreApi.Logic.Implementations
                         response.token_type = "";
                         response.access_token = "";
                         response.expires_in = "";
-
                     }
                 }
                 else

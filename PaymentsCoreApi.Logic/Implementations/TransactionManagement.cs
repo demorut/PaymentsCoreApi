@@ -34,7 +34,7 @@ namespace PaymentsCoreApi.Logic.Implementations
                     return new BaseResponse()
                     { ResponseCode = "100", ResponseMessage = "System access denied" };
 
-                var account = _dataBaseContext.Account.Where(a => a.CustomerId == request.CustomerId).Where(a => a.AccountNumber == request.CustomerAccount).FirstOrDefault();
+                var account = _dataBaseContext.Account.Where(a => a.CustomerId == Helper.FormatPhoneNumber(request.CustomerId)).Where(a => a.AccountNumber == request.CustomerAccount).FirstOrDefault();
                 if (account == null)
                     return new BaseResponse()
                     { ResponseCode = "100", ResponseMessage = "Customer Account Does not exist" };
@@ -46,7 +46,7 @@ namespace PaymentsCoreApi.Logic.Implementations
 
                 var deposit = new ThirdPartyDeposits()
                 {
-                    CustomerId = request.CustomerId,
+                    CustomerId =Helper.FormatPhoneNumber(request.CustomerId),
                     CustomerAccount = request.CustomerAccount,
                     TransactionAmount = Convert.ToDouble(request.Amount),
                     RequestId = request.TransactionId,
@@ -59,7 +59,7 @@ namespace PaymentsCoreApi.Logic.Implementations
 
                 await _dataBaseContext.AddAsync(deposit);
                 await _dataBaseContext.SaveChangesAsync();
-                return new BaseResponse() { ResponseCode = "200", ResponseMessage = "ThirdParty Vendor is not supported",ResponseId=deposit.SystemId };
+                return new BaseResponse() { ResponseCode = "200", ResponseMessage = "Deposit request has benn logged and is pending approval from the partner system",ResponseId=deposit.SystemId };
             }
             catch (Exception)
             {

@@ -64,5 +64,92 @@ namespace PaymentsCoreApi.Controllers.v1
                 return Ok(response);
             }
         }
+
+        [HttpPost]
+        //[Authorize]
+        [ActionName("add_customer_product_account")]
+        [ProducesResponseType(typeof(BaseResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(BaseResponse), StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(typeof(BaseResponse), StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> AddCustomerProductAccount(CustomerSignUpDto request)
+        {
+            var response = new BaseResponse();
+            try
+            {
+                var vaildation = request.IsValid();
+                if (vaildation.Item1)
+                {
+                    response = await _customerManagement.InitiateCustomerSignUp(request);
+                    return Ok(response);
+                }
+
+                else
+                    return Ok(new BaseResponse() { ResponseCode = "100", ResponseMessage = vaildation.Item2 });
+            }
+            catch (Exception ex)
+            {
+                response.ResponseCode = "100";
+                response.ResponseMessage = "Sorry!, Service is currently unavailable please try again later ";
+                return Ok(response);
+            }
+        }
+
+        [HttpPost]
+        //[Authorize]
+        [ActionName("update_customer_profile")]
+        [ProducesResponseType(typeof(BaseResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(BaseResponse), StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(typeof(BaseResponse), StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> UpdateCustomerProfile(CustomerSignUpDto request)
+        {
+            var response = new BaseResponse();
+            try
+            {
+                var vaildation = request.IsValid();
+                if (vaildation.Item1)
+                {
+                    response = await _customerManagement.InitiateCustomerSignUp(request);
+                    return Ok(response);
+                }
+
+                else
+                    return Ok(new BaseResponse() { ResponseCode = "100", ResponseMessage = vaildation.Item2 });
+            }
+            catch (Exception ex)
+            {
+                response.ResponseCode = "100";
+                response.ResponseMessage = "Sorry!, Service is currently unavailable please try again later ";
+                return Ok(response);
+            }
+        }
+
+        [HttpPost]
+        //[Authorize]
+        [ActionName("get_customer_product_accounts")]
+        [ProducesResponseType(typeof(BaseResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(BaseResponse), StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(typeof(BaseResponse), StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> GetCustomerProductAccounts(CustomerSignUpDto request)
+        {
+            var response = new BaseResponse();
+            try
+            {
+                var vaildation = request.IsValid();
+                if (vaildation.Item1)
+                {
+                    response = await _customerManagement.InitiateCustomerSignUp(request);
+                    return Ok(response);
+                }
+
+                else
+                    return Ok(new BaseResponse() { ResponseCode = "100", ResponseMessage = vaildation.Item2 });
+            }
+            catch (Exception ex)
+            {
+                response.ResponseCode = "100";
+                response.ResponseMessage = "Sorry!, Service is currently unavailable please try again later ";
+                return Ok(response);
+            }
+        }  
     }
 }

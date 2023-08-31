@@ -11,6 +11,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using PaymentsCoreApi.Logic.Helpers;
+using System.Net;
+using PaymentsCoreApi.Domain.Constants;
+
 namespace PaymentsCoreApi.Logic.Implementations
 {
     public class DataManagement:IDataManagement
@@ -59,6 +63,24 @@ namespace PaymentsCoreApi.Logic.Implementations
                         }
                     }
                 }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+        public async Task<PairedItemResponse> GetPariedItems(PairedItemRequest request)
+        {
+            try
+            {
+                var parameters = new Hashtable
+                {
+                    { "P_PairCode", request.PairCode }
+                };
+                var queryRequest = new QueryRequestDto() { Parameters = parameters, StoredProcedure=SystemConstants.GetPairedItemSp };
+                var dt = await InternalExecuteQuery(queryRequest);
+                var items = Helper.ExtractList<PairedItem>(dt);
+                return new PairedItemResponse() { ResponseCode = "200", ResponseMessage = "Success", PairedItems = items };
             }
             catch (Exception)
             {
