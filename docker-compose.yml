@@ -4,9 +4,9 @@ networks:
   frontend:
     ipam:
       config:
-        - subnet: 10.255.100.0/28
+        - subnet: 10.255.100.96/28
 services:
-  smartlifeapi:
+  paymentcoreapi:
     build: ./
     environment:
       - TZ=Africa/Nairobi
@@ -16,14 +16,14 @@ services:
       - "80"
     networks:
         frontend:
-            ipv4_address: 10.255.100.10      
+            ipv4_address: 10.255.100.99      
   nginx:
     build: ./nginx/
-    container_name: server_smartlifeapi
+    container_name: server_paymentcoreapi
     depends_on: 
-      - smartlifeapi
+      - paymentcoreapi
     ports:
-      - "9702:9702"
+      - "7702:7702"
     networks:
         frontend:
-            ipv4_address: 10.255.100.11 
+            ipv4_address: 10.255.100.98 
