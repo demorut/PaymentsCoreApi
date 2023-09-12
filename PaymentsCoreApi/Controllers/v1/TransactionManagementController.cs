@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PaymentsCoreApi.Domain.Dtos;
 using PaymentsCoreApi.Logic.Interfaces;
@@ -16,7 +17,7 @@ namespace PaymentsCoreApi.Controllers.v1
         }
 
         [HttpPost]
-        //[Authorize]
+        [Authorize]
         [ActionName("make_thirdparty_deposit")]
         [ProducesResponseType(typeof(BaseResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(BaseResponse), StatusCodes.Status401Unauthorized)]
@@ -45,7 +46,7 @@ namespace PaymentsCoreApi.Controllers.v1
         }
 
         [HttpPost]
-        //[Authorize]
+        [Authorize]
         [ActionName("make_bill_payment")]
         [ProducesResponseType(typeof(BaseResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(BaseResponse), StatusCodes.Status401Unauthorized)]
@@ -74,7 +75,7 @@ namespace PaymentsCoreApi.Controllers.v1
         }
 
         [HttpPost]
-        //[Authorize]
+        [Authorize]
         [ActionName("make_Internal_transfer")]
         [ProducesResponseType(typeof(BaseResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(BaseResponse), StatusCodes.Status401Unauthorized)]

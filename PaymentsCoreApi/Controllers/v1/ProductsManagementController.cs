@@ -21,7 +21,7 @@ namespace PaymentsCoreApi.Controllers.v1
         }
 
         [HttpPost]
-        //[Authorize]
+        [Authorize]
         [ActionName("add_product")]
         [ProducesResponseType(typeof(BaseResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(BaseResponse), StatusCodes.Status401Unauthorized)]
@@ -50,7 +50,7 @@ namespace PaymentsCoreApi.Controllers.v1
         }
 
         [HttpPost]
-        //[Authorize]
+        [Authorize]
         [ActionName("get_products")]
         [ProducesResponseType(typeof(BaseResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(BaseResponse), StatusCodes.Status401Unauthorized)]

@@ -15,7 +15,7 @@ namespace PaymentsCoreApi.Controllers.v1
         }
 
         [HttpPost]
-        //[Authorize]
+        [Authorize]
         [ActionName("initiate_customer_signup")]
         [ProducesResponseType(typeof(BaseResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(BaseResponse), StatusCodes.Status401Unauthorized)]
@@ -44,8 +44,8 @@ namespace PaymentsCoreApi.Controllers.v1
         }
 
         [HttpPost]
-        //[Authorize]
-        [ActionName("Complete_customer_signup")]
+        [Authorize]
+        [ActionName("complete_customer_signup")]
         [ProducesResponseType(typeof(BaseResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(BaseResponse), StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(typeof(BaseResponse), StatusCodes.Status400BadRequest)]
@@ -66,7 +66,7 @@ namespace PaymentsCoreApi.Controllers.v1
         }
 
         [HttpPost]
-        //[Authorize]
+        [Authorize]
         [ActionName("add_customer_product_account")]
         [ProducesResponseType(typeof(BaseResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(BaseResponse), StatusCodes.Status401Unauthorized)]
@@ -95,7 +95,7 @@ namespace PaymentsCoreApi.Controllers.v1
         }
 
         [HttpPost]
-        //[Authorize]
+        [Authorize]
         [ActionName("update_customer_profile")]
         [ProducesResponseType(typeof(BaseResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(BaseResponse), StatusCodes.Status401Unauthorized)]
@@ -124,7 +124,7 @@ namespace PaymentsCoreApi.Controllers.v1
         }
 
         [HttpPost]
-        //[Authorize]
+        [Authorize]
         [ActionName("get_customer_product_accounts")]
         [ProducesResponseType(typeof(BaseResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(BaseResponse), StatusCodes.Status401Unauthorized)]

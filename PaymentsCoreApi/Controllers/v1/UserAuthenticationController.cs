@@ -70,7 +70,16 @@ namespace PaymentsCoreApi.Controllers.v1
             var response = new BaseResponse();
             try
             {
-                response = await _userAuthenticationManagement.InitiateUserPasswordReset(request);
+                var vaildation = request.IsValid();
+                if (vaildation.Item1)
+                {
+                    response = await _userAuthenticationManagement.InitiateUserPasswordReset(request);
+                }
+                else
+                {
+                    response.ResponseCode = "100";
+                    response.ResponseMessage = vaildation.Item2;
+                }
                 return Ok(response);
             }
             catch (Exception ex)
@@ -83,7 +92,7 @@ namespace PaymentsCoreApi.Controllers.v1
 
         [HttpPost]
         [Authorize]
-        [ActionName("Complete_user_password_reset")]
+        [ActionName("complete_user_password_reset")]
         [ProducesResponseType(typeof(BaseResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(BaseResponse), StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(typeof(BaseResponse), StatusCodes.Status400BadRequest)]
@@ -93,6 +102,28 @@ namespace PaymentsCoreApi.Controllers.v1
             try
             {
                 response = await _userAuthenticationManagement.CompleteUserPasswordReset(request);
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                response.ResponseCode = "100";
+                response.ResponseMessage = "Sorry!, Service is currently unavailable please try again later ";
+                return Ok(response);
+            }
+        }
+
+        [HttpPost]
+        [Authorize]
+        [ActionName("get_user_accounts")]
+        [ProducesResponseType(typeof(UserAccountsDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(UserAccountsDto), StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(typeof(UserAccountsDto), StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> GetUserAccounts(UserAccountRequestDto request)
+        {
+            var response = new UserAccountsDto();
+            try
+            {
+                response = await _userAuthenticationManagement.GetUserAccounts(request);
                 return Ok(response);
             }
             catch (Exception ex)

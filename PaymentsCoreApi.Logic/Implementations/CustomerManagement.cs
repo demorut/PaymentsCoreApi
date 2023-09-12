@@ -32,7 +32,7 @@ namespace PaymentsCoreApi.Logic.Implementations
                     return new BaseResponse() { ResponseCode = "100", ResponseMessage = "Invalid email address" };
                 //validate phone number
 
-                var customer = await _dataBaseContext.Customers.Where(c => c.Email == request.Email || c.PhoneNumber == Helper.FormatPhoneNumber(request.PhoneNumber)).FirstOrDefaultAsync();
+                var customer = await _dataBaseContext.Customers.Where(c => c.PhoneNumber == Helper.FormatPhoneNumber(request.PhoneNumber)).FirstOrDefaultAsync();
                 if (customer != null)
                     return new BaseResponse() { ResponseCode = "100", ResponseMessage = "Phone Number or email already exists in the system, please reset password if you have forgotten it" };
 
@@ -135,7 +135,8 @@ namespace PaymentsCoreApi.Logic.Implementations
                             LastPasswordChangeDate= DateTime.Now,
                             LoginAttempts=0,
                             LastLoginDate=DateTime.Now,
-                            Approved=true
+                            Approved=true,
+                            UserType= SystemConstants.Customer,
                         };
                         var account = new Account()
                         {

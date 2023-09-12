@@ -20,6 +20,7 @@ namespace PaymentsCoreApi.Controllers.v1
         }
 
         [HttpPost]
+        //[Authorize]
         [ActionName("execute_query")]
         [ProducesResponseType(typeof(QueryResponseDto), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(QueryResponseDto), StatusCodes.Status401Unauthorized)]
@@ -45,6 +46,7 @@ namespace PaymentsCoreApi.Controllers.v1
         }
 
         [HttpPost]
+        //[Authorize]
         [ActionName("execute_non_query")]
         [ProducesResponseType(typeof(QueryResponseDto), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(QueryResponseDto), StatusCodes.Status401Unauthorized)]
@@ -70,6 +72,7 @@ namespace PaymentsCoreApi.Controllers.v1
         }
 
         [HttpPost]
+        [Authorize]
         [ActionName("get_paired_items")]
         [ProducesResponseType(typeof(PairedItemResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(PairedItemResponse), StatusCodes.Status401Unauthorized)]

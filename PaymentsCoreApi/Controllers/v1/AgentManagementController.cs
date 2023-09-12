@@ -16,7 +16,7 @@ namespace PaymentsCoreApi.Controllers.v1
 		}
 
 		[HttpPost]
-        //[Authorize]
+        [Authorize]
         [ActionName("create_agent")]
         [ProducesResponseType(typeof(BaseResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(BaseResponse), StatusCodes.Status401Unauthorized)]
@@ -45,7 +45,7 @@ namespace PaymentsCoreApi.Controllers.v1
         }
 
         [HttpPost]
-        //[Authorize]
+        [Authorize]
         [ActionName("approve_gent")]
         [ProducesResponseType(typeof(BaseResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(BaseResponse), StatusCodes.Status401Unauthorized)]

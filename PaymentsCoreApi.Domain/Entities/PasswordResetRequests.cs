@@ -27,5 +27,9 @@ namespace PaymentsCoreApi.Domain.Entities
         [Column("otp")]
         [StringLength(100)]
         public string? Otp { get; set; }
+
+        [Column("request_reference")]
+        [StringLength(100)]
+        public string? RequestReference { get; set; }
     }
 }

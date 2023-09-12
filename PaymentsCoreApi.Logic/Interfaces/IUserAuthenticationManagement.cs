@@ -11,6 +11,7 @@ namespace PaymentsCoreApi.Logic.Interfaces
     {
         Task<BaseResponse> ChangeUserPassword(PasswordChangeRequestDto request);
         Task<BaseResponse> CompleteUserPasswordReset(CompletePasswordResetRequestDto request);
+        Task<UserAccountsDto> GetUserAccounts(UserAccountRequestDto request);
         Task<BaseResponse> InitiateUserPasswordReset(PasswordResetRequestDto request);
         Task<UserDetailsDto> UserLogin(LoginRequestDto request);
     }

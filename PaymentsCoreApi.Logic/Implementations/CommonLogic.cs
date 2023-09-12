@@ -65,7 +65,7 @@ namespace PaymentsCoreApi.Logic.Implementations
             // Create a new random number generator.
             Random random = new Random();
             // Generate a 5 digit random number.
-            int otp = random.Next(100000, 999999);
+            int otp = random.Next(1000, 9999);
             // Return the OTP as a string.
             return otp.ToString();
         }

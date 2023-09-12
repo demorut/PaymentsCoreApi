@@ -1,4 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using Org.BouncyCastle.Asn1.Ocsp;
 using PaymentsCoreApi.Data.Contexts;
 using PaymentsCoreApi.Domain.Constants;
 using PaymentsCoreApi.Domain.Dtos;
@@ -8,6 +10,7 @@ using PaymentsCoreApi.Logic.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -68,19 +71,144 @@ namespace PaymentsCoreApi.Logic.Implementations
                 if((DateTime.Now-user.LastPasswordChangeDate).Days>365)
                     return new UserDetailsDto() { ResponseCode = "300", ResponseMessage = "Your Password has expired please set a new Password",ResetPassword=true };
 
+
                 //Successful login
                 var userdetails = new UserDetailsDto()
                 {
+                    UserId=user.Username,
+                    UserType=user.UserType,
                     ResetPassword = false,
                     ResponseCode = "200",
                     ResponseMessage = "Successful",
 
                 };
+
+                if (user.UserType.Equals("AGENT"))
+                {
+                    userdetails.AgentDetails = GetAgentDetails(request.Username);
+                    userdetails.Accounts = GetAccountDetails(request.Username);
+                }
+                else
+                {
+                    userdetails.CustomerDetails = GetCustomerDetails(request.Username);
+                    userdetails.Accounts = GetAccountDetails(request.Username);
+                }
+
                 return userdetails;
             }
             catch(Exception)
             {
                 throw;
+            }
+        }
+
+        private List<AccountDetailsDto>? GetAccountDetails(string? username)
+        {
+            var accounts = new List<AccountDetailsDto>();
+            var accountlisting = _dataBaseContext.Account.Where(u => u.CustomerId == username).ToList();
+            foreach (var account in accountlisting)
+            {
+                accounts.Add(new AccountDetailsDto()
+                {
+                    RecordId=account.RecordId.ToString(),
+                    CustomerId=account.CustomerId,
+                    AccountNumber=account.AccountNumber,
+                    AccountName=account.AccountName,
+                    AccountType=account.AccountType,
+                    CurrencyCode=account.CurrencyCode,
+                    AccountStatus=account.AccountStatus?"ACTIVE":"DEACTIVATED",
+                    Balance=account.Balance
+                }
+                );
+            }
+            return accounts;
+        }
+
+        private CustomerDetailsDto? GetCustomerDetails(string? username)
+        {
+            var customerlisting = _dataBaseContext.Customers.Where(u => u.CustomerId == username).ToList();
+            if (customerlisting.Count != 1)
+                throw new Exception("System Can not determine user details");
+
+            var customer = customerlisting.First();
+
+            var customerDetails = new CustomerDetailsDto()
+            {
+                RecordId=customer.RecordId.ToString(),
+                CustomerId=customer.CustomerId.ToString(),
+                FirstName=customer.FirstName,
+                LastName=customer.LastName,
+                PhoneNumber=customer.PhoneNumber,
+                Email=customer.Email,
+                CustomerType=customer.CustomerType,
+                CustomerStatus=customer.CustomerStatus,
+                CountryCode=customer.CountryCode,
+                UserId=customer.UserId,
+            };
+            return customerDetails;
+        }
+
+        private AgentDetailsDto? GetAgentDetails(string? username)
+        {
+            var Agentlisting = _dataBaseContext.Agents.Where(u => u.AgentId == username).ToList();
+            if (Agentlisting.Count != 1)
+                throw new Exception("System Can not determine user details");
+
+            var agent = Agentlisting.First();
+
+            var agentDetails = new AgentDetailsDto()
+            {
+                RecordId=agent.RecordId.ToString(),
+                AgentId=agent.AgentId,
+                AgentName=agent.AgentName,
+                ContactName=agent.ContactName,
+                AgentType=agent.AgentType,
+                AgentStatus=agent.AgentStatus,
+                CountryCode=agent.CountryCode,
+                PhoneNumber=agent.PhoneNumber,
+                Email=agent.Email,
+                City=agent.City,
+                Street=agent.Street,
+                IdType=agent.IdType,
+                IdNumber=agent.IdNumber
+            };
+            return agentDetails;
+        }
+
+        public async Task<UserAccountsDto> GetUserAccounts(UserAccountRequestDto request)
+        {
+            try
+            {
+                var credentails = _dataBaseContext.Channel.Where(c => c.ChannelKey == request.Apikey).FirstOrDefault();
+                if (credentails == null)
+                    return new UserAccountsDto()
+                    { ResponseCode = "100", ResponseMessage = "System access denied" };
+
+                var inputstring = credentails.ChannelKey + credentails.ChannelSecretKey + request.CustomerId + request.RequestTimestamp;
+                if (!_commonLogic.IsValidCredentails(request.Signature, inputstring))
+                    return new UserAccountsDto()
+                    { ResponseCode = "100", ResponseMessage = "System access denied" };
+
+                var userlist = _dataBaseContext.UserLogins.Where(u => u.Username == request.CustomerId).ToList();
+                if (userlist.Count != 1)
+                    return new UserAccountsDto() { ResponseCode = "100", ResponseMessage = "Invalid User details" };
+
+                var user = userlist.First();
+                if (!user.Active)
+                    return new UserAccountsDto() { ResponseCode = "100", ResponseMessage = "Your user account is deactivated please contact our customer service for assistance" };
+
+                var userAccounts = new UserAccountsDto()
+                {
+                    ResponseCode = "200",
+                    ResponseMessage = "Successful",
+
+                };
+                userAccounts.Accounts=  GetAccountDetails(request.CustomerId);
+                return userAccounts;
+            }
+            catch (Exception ex)
+            {
+                return new UserAccountsDto() { ResponseCode = "100", ResponseMessage = "Failed to get user details" };
             }
         }
 
@@ -164,7 +292,7 @@ namespace PaymentsCoreApi.Logic.Implementations
                     return new BaseResponse()
                     { ResponseCode = "100", ResponseMessage = "System access denied" };
 
-                var userlist = _dataBaseContext.UserLogins.Where(u => u.Username == request.Username).ToList();
+                var userlist = _dataBaseContext.UserLogins.Where(u => u.Username == Helper.FormatPhoneNumber(request.Username)).ToList();
                 if (userlist.Count != 1)
                     return new BaseResponse() { ResponseCode = "100", ResponseMessage = "Invalid User details" };
 
@@ -181,6 +309,7 @@ namespace PaymentsCoreApi.Logic.Implementations
                     Otp = otp,
                     RecordDate = DateTime.Now,
                     CreatedBy = user.CustomerId,
+                    RequestReference=request.RequestReference
                 };
                 var customerlog = await _dataBaseContext.AddAsync(newrequest);
                 await _dataBaseContext.SaveChangesAsync();
@@ -213,6 +342,16 @@ namespace PaymentsCoreApi.Logic.Implementations
         {
             try
             {
+                var credentails = _dataBaseContext.Channel.Where(c => c.ChannelKey == request.Apikey).FirstOrDefault();
+                if (credentails == null)
+                    return new BaseResponse()
+                    { ResponseCode = "100", ResponseMessage = "System access denied" };
+
+                var inputstring = credentails.ChannelKey + credentails.ChannelSecretKey + request.Username+request.Otp + request.RequestTimestamp;
+                if (!_commonLogic.IsValidCredentails(request.Signature, inputstring))
+                    return new BaseResponse()
+                    { ResponseCode = "100", ResponseMessage = "System access denied" };
+
                 var passwordrestrequest = await _dataBaseContext.PasswordResetRequests.Where(s => s.RecordId == Convert.ToInt64(request.RequestId)).FirstOrDefaultAsync();
 
                 if (passwordrestrequest == null)
