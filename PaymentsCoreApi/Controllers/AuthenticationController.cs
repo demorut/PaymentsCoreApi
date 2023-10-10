@@ -28,8 +28,9 @@ namespace PaymentsCoreApi.Controllers
                 else
                     return Unauthorized(response);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Console.WriteLine(ex.Message);
                 response.access_token = "";
                 response.expires_in = "";
                 return Unauthorized(response);

@@ -54,8 +54,9 @@ namespace PaymentsCoreApi.Logic.Implementations
                     return false;
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Console.WriteLine(ex.Message);
                 return false;
             }
         }

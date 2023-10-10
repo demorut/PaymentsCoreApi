@@ -74,8 +74,9 @@ namespace PaymentsCoreApi.Logic.Helpers
                     return hash;
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Console.WriteLine(ex.Message);
                 return "";
             }
 

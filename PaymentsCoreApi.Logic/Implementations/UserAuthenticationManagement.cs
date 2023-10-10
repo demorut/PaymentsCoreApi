@@ -40,6 +40,7 @@ namespace PaymentsCoreApi.Logic.Implementations
                     return new UserDetailsDto()
                     { ResponseCode = "100", ResponseMessage = "System access denied" };
 
+                request.Username = Helper.FormatPhoneNumber(request.Username);
                 var userlist=_dataBaseContext.UserLogins.Where(u=>u.Username== request.Username).ToList();
                 if(userlist.Count!=1)
                     return new UserDetailsDto() { ResponseCode="100",ResponseMessage="Invalid User details"};
